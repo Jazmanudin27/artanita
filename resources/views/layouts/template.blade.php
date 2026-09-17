@@ -442,18 +442,18 @@
             border: 1px solid #cbd5e1 !important;
             border-radius: 14px !important;
             box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-            background-color: #ffffff !important;
+            background-color: #ffffff;
             transition: all 0.2s ease;
         }
 
         .card-header {
-            background-color: #ffffff !important;
-            border-bottom: 1px solid #e2e8f0 !important;
+            background-color: inherit;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
             padding: 1.25rem 1.5rem !important;
         }
 
         .card-body {
-            background-color: #ffffff !important;
+            background-color: inherit;
         }
 
         .card-title {
