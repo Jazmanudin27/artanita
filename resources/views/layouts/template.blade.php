@@ -44,16 +44,16 @@
             --portal-sidebar-active: #2251a3;
             --portal-accent: #00d2ff;
             --portal-accent-blue: #2563eb;
-            --portal-bg: #f4f6fb;
+            --portal-bg: #eef2f8;
             --portal-card-bg: #ffffff;
             --portal-text-dark: #1e293b;
             --portal-text-muted: #64748b;
-            --portal-border: #e2e8f0;
+            --portal-border: #cbd5e1;
         }
 
-        body {
+        body, .main, .content {
             font-family: 'Inter', sans-serif;
-            background-color: var(--portal-bg);
+            background-color: #eef2f8 !important;
             color: var(--portal-text-dark);
             overflow-x: hidden;
         }
@@ -438,17 +438,19 @@
         }
 
         /* Card Enhancements for Page Content */
+        .card, .card-body, .card-header {
+            background-color: #ffffff !important;
+        }
+
         .card {
-            border: 1px solid var(--portal-border) !important;
+            border: 1px solid #cbd5e1 !important;
             border-radius: 14px !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
-            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05) !important;
             transition: all 0.2s ease;
         }
 
         .card-header {
-            background: transparent !important;
-            border-bottom: 1px solid #f1f5f9 !important;
+            border-bottom: 1px solid #e2e8f0 !important;
             padding: 1.25rem 1.5rem !important;
         }
 
