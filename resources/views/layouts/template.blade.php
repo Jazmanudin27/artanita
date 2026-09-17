@@ -44,16 +44,16 @@
             --portal-sidebar-active: #2251a3;
             --portal-accent: #00d2ff;
             --portal-accent-blue: #2563eb;
-            --portal-bg: #eef2f8;
+            --portal-bg: #eef2f6;
             --portal-card-bg: #ffffff;
             --portal-text-dark: #1e293b;
             --portal-text-muted: #64748b;
             --portal-border: #cbd5e1;
         }
 
-        body, .main, .content {
+        body {
             font-family: 'Inter', sans-serif;
-            background-color: #eef2f8 !important;
+            background-color: var(--portal-bg);
             color: var(--portal-text-dark);
             overflow-x: hidden;
         }
@@ -438,20 +438,22 @@
         }
 
         /* Card Enhancements for Page Content */
-        .card, .card-body, .card-header {
-            background-color: #ffffff !important;
-        }
-
         .card {
             border: 1px solid #cbd5e1 !important;
             border-radius: 14px !important;
-            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05) !important;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+            background-color: #ffffff !important;
             transition: all 0.2s ease;
         }
 
         .card-header {
+            background-color: #ffffff !important;
             border-bottom: 1px solid #e2e8f0 !important;
             padding: 1.25rem 1.5rem !important;
+        }
+
+        .card-body {
+            background-color: #ffffff !important;
         }
 
         .card-title {
