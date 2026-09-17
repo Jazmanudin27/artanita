@@ -23,10 +23,23 @@
     <script src="https://unpkg.com/leaflet-geolocation/dist/leaflet-geolocation.min.js"></script>
     <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
 
-    <!-- Responsive Mobile Menu Fix -->
+    <!-- Responsive Mobile Menu Fix & High Contrast Cards -->
     <style>
         body {
-            background-color: #f1f5f9 !important;
+            background-color: #eef2f6 !important;
+        }
+
+        /* High Contrast Cards for Mobile */
+        .card, .section .card {
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 16px !important;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+        }
+
+        .card-body {
+            background-color: #ffffff !important;
+            border-radius: 16px !important;
         }
 
         /* Responsive 4-Column Menu Grid */

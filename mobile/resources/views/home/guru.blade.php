@@ -138,10 +138,6 @@
                     <img src="{{ 'assets/img/icon/5.png' }}" class="icon-menu">
                     <span>Mapel</span>
                 </a>
-                <a href="{{ route('viewKelas') }}">
-                    <img src="{{ 'assets/img/icon/4.png' }}" class="icon-menu">
-                    <span>Kelas</span>
-                </a>
                 <a href="{{ route('viewPresensi') }}">
                     <img src="{{ 'assets/img/icon/7.png' }}" class="icon-menu">
                     <span>History</span>
@@ -161,10 +157,6 @@
                 <a href="{{ route('rekapAbsensiMapel') }}">
                     <img src="{{ asset('assets/img/icon/5.png') }}" class="icon-menu">
                     <span>Rekap Mapel</span>
-                </a>
-                <a href="{{ route('viewJadwal') }}">
-                    <img src="{{ asset('assets/img/icon/9.png') }}" class="icon-menu">
-                    <span>Jadwal</span>
                 </a>
             </div>
         </div>
