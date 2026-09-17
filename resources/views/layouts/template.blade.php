@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 @php
     $member = DB::table('member')
         ->where('member.kode_member', Auth::user()->kode_member)
@@ -10,254 +10,699 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-    <meta name="author" content="AdminKit">
-    <meta name="keywords"
-        content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <meta name="description" content="Artanita System - Modern Admin & Mobile Portal">
+    <meta name="author" content="Artanita">
 
     <link rel="shortcut icon" href="{{ asset('adminkit/img/icons/icon-48x48.png') }}" />
 
-    <title>@yield('titlepage')</title>
+    <title>@yield('titlepage') - Artanita System</title>
 
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- App CSS (AdminKit / Bootstrap 5) -->
     <link href="{{ asset('adminkit/css/app.css') }}" rel="stylesheet">
 
+    <!-- Core Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <link href="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.6/datatables.min.js"></script>
-
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
-
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Portal Premium Design System -->
     <style>
-        .table-reponsive {
+        :root {
+            --portal-sidebar-bg: #141f36;
+            --portal-sidebar-hover: #1e2c4a;
+            --portal-sidebar-active: #2251a3;
+            --portal-accent: #00d2ff;
+            --portal-accent-blue: #2563eb;
+            --portal-bg: #f4f6fb;
+            --portal-card-bg: #ffffff;
+            --portal-text-dark: #1e293b;
+            --portal-text-muted: #64748b;
+            --portal-border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--portal-bg);
+            color: var(--portal-text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Wrapper Layout */
+        .wrapper {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: 270px;
+            min-width: 270px;
+            max-width: 270px;
+            background: var(--portal-sidebar-bg);
+            color: #ffffff;
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08);
+        }
+
+        #sidebar.collapsed {
+            margin-left: -270px;
+        }
+
+        .sidebar-brand-wrapper {
+            padding: 1.5rem 1.25rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-brand-logo {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #2563eb, #00d2ff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        .sidebar-brand-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        /* User Profile Card inside Sidebar */
+        .sidebar-user-card {
+            margin: 1rem 1rem 0.5rem;
+            padding: 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-user-info {
+            overflow: hidden;
+        }
+
+        .sidebar-user-name {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-user-role {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            background: rgba(0, 210, 255, 0.15);
+            color: var(--portal-accent);
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        /* Navigation List */
+        .sidebar-content {
+            padding: 0.5rem 0.75rem 1.5rem;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #64748b;
+            padding: 1.25rem 0.85rem 0.5rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-item {
+            margin-bottom: 3px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem 0.9rem;
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 500;
+            border-radius: 10px;
+            text-decoration: none !important;
+            transition: all 0.2s ease;
+            gap: 12px;
+        }
+
+        .sidebar-link i, .sidebar-link svg {
+            width: 18px;
+            height: 18px;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-link:hover {
+            color: #ffffff;
+            background: var(--portal-sidebar-hover);
+        }
+
+        .sidebar-link:hover i, .sidebar-link:hover svg {
+            color: var(--portal-accent);
+        }
+
+        .sidebar-item.active > .sidebar-link {
+            color: #ffffff;
+            background: linear-gradient(90deg, #1d4ed8, #2563eb);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+        }
+
+        .sidebar-item.active > .sidebar-link i, .sidebar-item.active > .sidebar-link svg {
+            color: #ffffff;
+        }
+
+        /* Submenu Styling */
+        .sidebar-dropdown {
+            padding-left: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .sidebar-dropdown .sidebar-link {
+            font-size: 0.83rem;
+            padding: 0.5rem 0.85rem 0.5rem 1.8rem;
+            color: #94a3b8;
+            position: relative;
+        }
+
+        .sidebar-dropdown .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #475569;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-dropdown .sidebar-item.active .sidebar-link::before,
+        .sidebar-dropdown .sidebar-link:hover::before {
+            background-color: var(--portal-accent);
+            box-shadow: 0 0 8px var(--portal-accent);
+        }
+
+        /* Main Content Wrapper */
+        .main {
+            flex-grow: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--portal-bg);
+        }
+
+        /* Header Navbar */
+        .navbar-custom {
+            background: #ffffff;
+            border-bottom: 1px solid var(--portal-border);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .sidebar-toggle-btn {
+            background: #f1f5f9;
+            border: 1px solid var(--portal-border);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--portal-text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: #e2e8f0;
+            color: var(--portal-text-dark);
+        }
+
+        /* Search Box in Header */
+        .header-search {
+            position: relative;
+            width: 280px;
+        }
+
+        .header-search input {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            font-size: 0.85rem;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .header-search input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .header-search-icon {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            width: 16px;
+            height: 16px;
+        }
+
+        .header-shortcut-badge {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #94a3b8;
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Clock & Action Items */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .clock-badge {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1e293b;
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clock-badge i {
+            color: #2563eb;
+        }
+
+        .header-action-icon {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .header-action-icon:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .header-action-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 10px;
+            border: 2px solid #ffffff;
+        }
+
+        .user-dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 10px 4px 4px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-dropdown-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .user-dropdown-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .user-dropdown-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--portal-text-dark);
+        }
+
+        /* Content Area Container */
+        .content {
+            padding: 1.75rem 1.75rem 2.5rem;
+            flex-grow: 1;
+        }
+
+        /* Card Enhancements for Page Content */
+        .card {
+            border: 1px solid var(--portal-border) !important;
+            border-radius: 14px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .card-header {
+            background: transparent !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            padding: 1.25rem 1.5rem !important;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--portal-text-dark);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer.footer {
+            background: #ffffff;
+            border-top: 1px solid var(--portal-border);
+            padding: 1rem 1.75rem;
+            font-size: 0.83rem;
+            color: var(--portal-text-muted);
+        }
+
+        .table-responsive {
             width: 100%;
             overflow-x: auto;
         }
 
-        .select2-container {}
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.03);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.15);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.25);
+        }
     </style>
 </head>
-@php
-    $member = DB::table('member')
-        ->where('member.kode_member', Auth::user()->kode_member)
-        ->first();
-@endphp
 
 <body>
     <div class="wrapper">
-        <nav id="sidebar" class="sidebar" style="zoom:90%">
-            <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="#">
-                    <span class="align-middle">{{ $member->nama_member }}</span>
-                </a>
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="sidebar">
+            <!-- Brand Logo -->
+            <div class="sidebar-brand-wrapper">
+                <div class="sidebar-brand-logo">P</div>
+                <div>
+                    <div class="sidebar-brand-text">PORTAL</div>
+                    <div style="font-size: 0.65rem; color: #94a3b8; font-weight: 500;">ARTANITA SYSTEM</div>
+                </div>
+            </div>
 
+            <!-- User Profile Summary in Sidebar -->
+            <div class="sidebar-user-card">
+                <img src="{{ asset('upload/3.png') }}" class="sidebar-user-avatar" alt="Avatar" />
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" title="{{ $member->nama_member ?? 'User' }}">{{ $member->nama_member ?? 'User' }}</div>
+                    <span class="sidebar-user-role">
+                        @auth('guru') GURU @else ADMIN @endauth
+                    </span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="sidebar-content js-simplebar">
                 <ul class="sidebar-nav">
-                    @if ($member->exp_date > Date('Y-m-d'))
-                        <li class="sidebar-header">
-                            Menu
-                        </li>
+                    @if ($member && $member->exp_date > Date('Y-m-d'))
+                        <li class="sidebar-header">Main Menu</li>
+                        
                         @auth('guru')
                             <li class="sidebar-item {{ request()->is('dashboardGuru') ? 'active' : '' }}">
                                 <a class="sidebar-link" href="{{ route('dashboardGuru') }}">
-                                    <i class="align-middle" data-feather="sliders"></i> <span
-                                        class="align-middle">Dashboard</span>
+                                    <i data-feather="grid"></i>
+                                    <span>Dashboard</span>
                                 </a>
                             </li>
                         @else
                             <li class="sidebar-item {{ request()->is('dashboardAdmin') ? 'active' : '' }}">
                                 <a class="sidebar-link" href="{{ route('dashboardAdmin') }}">
-                                    <i class="align-middle" data-feather="sliders"></i> <span
-                                        class="align-middle">Dashboard</span>
+                                    <i data-feather="grid"></i>
+                                    <span>Dashboard</span>
                                 </a>
                             </li>
                         @endauth
 
-
+                        <!-- Data Master Dropdown -->
                         <li class="sidebar-item">
                             <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="briefcase"></i> <span class="align-middle">Data
-                                    Master</span>
+                                <i data-feather="database"></i>
+                                <span>Data Master</span>
                             </a>
-                            <ul id="ui" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewGuru') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewGuru') }}">Guru</a></li>
-                                <li class="sidebar-item {{ request()->is('viewSiswa') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewSiswa') }}">Siswa</a>
+                            <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewGuru') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewGuru') }}">Data Guru</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewKelas') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewKelas') }}">Kelas</a>
+                                <li class="sidebar-item {{ request()->is('viewSiswa') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewSiswa') }}">Data Siswa</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewMapel') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewMapel') }}">Mapel</a>
+                                <li class="sidebar-item {{ request()->is('viewKelas') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewKelas') }}">Data Kelas</a>
+                                </li>
+                                <li class="sidebar-item {{ request()->is('viewMapel') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewMapel') }}">Mata Pelajaran</a>
                                 </li>
                             </ul>
                         </li>
 
+                        <!-- Surat Dropdown -->
                         <li class="sidebar-item">
                             <a data-target="#surat" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="mail"></i> <span class="align-middle">Surat</span>
+                                <i data-feather="mail"></i>
+                                <span>Surat Menyurat</span>
                             </a>
-                            <ul id="surat" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewSuratAbsen') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewSuratAbsen') }}">Absen Guru</a></li>
-                                <li class="sidebar-item {{ request()->is('viewSuratTeguran') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewSuratTeguran') }}">Teguran</a>
+                            <ul id="surat" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewSuratAbsen') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewSuratAbsen') }}">Absen Guru</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewSuratDispensasi') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewSuratDispensasi') }}">Dispensasi</a>
+                                <li class="sidebar-item {{ request()->is('viewSuratTeguran') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewSuratTeguran') }}">Surat Teguran</a>
                                 </li>
-                                {{-- <li class="sidebar-item {{ request()->is('viewSuratUndangan') ? 'active' : '' }}"><a
-                                    class="sidebar-link" href="{{ route('viewSuratUndangan') }}">Surat Undangan</a>
-                            </li> --}}
+                                <li class="sidebar-item {{ request()->is('viewSuratDispensasi') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewSuratDispensasi') }}">Dispensasi</a>
+                                </li>
                             </ul>
                         </li>
 
-
+                        <!-- Absensi Dropdown -->
                         <li class="sidebar-item">
                             <a data-target="#absensi" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="mail"></i> <span
-                                    class="align-middle">Absensi</span>
+                                <i data-feather="check-square"></i>
+                                <span>Presensi & Absensi</span>
                             </a>
-                            <ul id="absensi" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewAbsensiSiswa') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewAbsensiSiswa') }}">Absensi Siswa</a>
+                            <ul id="absensi" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewAbsensiSiswa') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewAbsensiSiswa') }}">Absensi Siswa</a>
                                 </li>
                             </ul>
                         </li>
 
+                        <li class="sidebar-header">Laporan & Rekap</li>
+
+                        <!-- Laporan Master Dropdown -->
                         <li class="sidebar-item">
                             <a data-target="#report" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="book"></i> <span class="align-middle">Laporan
-                                    Data Master</span>
+                                <i data-feather="file-text"></i>
+                                <span>Laporan Master</span>
                             </a>
-                            <ul id="report" class="sidebar-dropdown list-unstyled collapse "
-                                data-parent="#sidebar">
+                            <ul id="report" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
                                 <li class="sidebar-item {{ request()->is('laporanSiswa') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanSiswa') }}">Lap. Siswa</a>
+                                    <a class="sidebar-link" href="{{ route('laporanSiswa') }}">Laporan Siswa</a>
                                 </li>
                                 <li class="sidebar-item {{ request()->is('laporanGuru') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanGuru') }}">Lap. Guru</a>
+                                    <a class="sidebar-link" href="{{ route('laporanGuru') }}">Laporan Guru</a>
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- Laporan Absensi Dropdown -->
                         <li class="sidebar-item">
                             <a data-target="#report2" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="book"></i> <span
-                                    class="align-middle">Laporan Absnesi</span>
+                                <i data-feather="clipboard"></i>
+                                <span>Laporan Absensi</span>
                             </a>
-                            <ul id="report2" class="sidebar-dropdown list-unstyled collapse "
-                                data-parent="#sidebar">
+                            <ul id="report2" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
                                 <li class="sidebar-item {{ request()->is('laporanPresensi') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanPresensi') }}">Lap. Presensi
-                                        Guru</a>
+                                    <a class="sidebar-link" href="{{ route('laporanPresensi') }}">Presensi Guru</a>
                                 </li>
                                 <li class="sidebar-item {{ request()->is('laporanAbsensiSiswa') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanAbsensiSiswa') }}">Lap. Absensi
-                                        Siswa</a>
+                                    <a class="sidebar-link" href="{{ route('laporanAbsensiSiswa') }}">Absensi Siswa</a>
                                 </li>
                                 <li class="sidebar-item {{ request()->is('laporanAbsensiMapel') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanAbsensiMapel') }}">Lap. Absensi
-                                        Mapel</a>
+                                    <a class="sidebar-link" href="{{ route('laporanAbsensiMapel') }}">Absensi Mapel</a>
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- Laporan Surat Dropdown -->
                         <li class="sidebar-item">
                             <a data-target="#report3" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="book"></i> <span
-                                    class="align-middle">Laporan Surat</span>
+                                <i data-feather="send"></i>
+                                <span>Laporan Surat</span>
                             </a>
-                            <ul id="report3" class="sidebar-dropdown list-unstyled collapse "
-                                data-parent="#sidebar">
+                            <ul id="report3" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
                                 <li class="sidebar-item {{ request()->is('laporanSuratAbsen') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanSuratAbsen') }}">Lap. Surat
-                                        Absen</a>
+                                    <a class="sidebar-link" href="{{ route('laporanSuratAbsen') }}">Surat Absen</a>
                                 </li>
                                 <li class="sidebar-item {{ request()->is('laporanSuratTeguran') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanSuratTeguran') }}">Lap. Surat
-                                        Teguran</a>
+                                    <a class="sidebar-link" href="{{ route('laporanSuratTeguran') }}">Surat Teguran</a>
                                 </li>
-                                <li
-                                    class="sidebar-item {{ request()->is('laporanSuratDispensasi') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('laporanSuratDispensasi') }}">Lap. Surat
-                                        Dispensasi</a>
+                                <li class="sidebar-item {{ request()->is('laporanSuratDispensasi') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('laporanSuratDispensasi') }}">Surat Dispensasi</a>
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- Jadwal Pelajaran -->
                         <li class="sidebar-item {{ request()->is('cetakLaporanJadwal') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('cetakLaporanJadwal') }}"  target="_blank">
-                                <i class="align-middle" data-feather="sliders"></i> <span
-                                    class="align-middle">Jadwal Pelajaran</span>
+                            <a class="sidebar-link" href="{{ route('cetakLaporanJadwal') }}" target="_blank">
+                                <i data-feather="calendar"></i>
+                                <span>Jadwal Pelajaran</span>
                             </a>
                         </li>
+
+                        <!-- Perpustakaan -->
                         <li class="sidebar-item">
                             <a data-target="#perpustakaan" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="align-justify"></i> <span
-                                    class="align-middle">Perpustakaan</span>
+                                <i data-feather="book-open"></i>
+                                <span>Perpustakaan</span>
                             </a>
-                            <ul id="perpustakaan" class="sidebar-dropdown list-unstyled collapse"
-                                data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewBuku') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewBuku') }}">Buku</a>
+                            <ul id="perpustakaan" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewBuku') ? 'active' : '' }}">
+                                    <a class="sidebar-link" href="{{ route('viewBuku') }}">Katalog Buku</a>
                                 </li>
                                 <li class="sidebar-item {{ request()->is('viewPeminjaman') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('viewPeminjaman') }}">Peminjaman</a>
+                                    <a class="sidebar-link" href="{{ route('viewPeminjaman') }}">Peminjaman Buku</a>
                                 </li>
                             </ul>
                         </li>
-                        
+
+                        <!-- Sarana Prasarana -->
                         <li class="sidebar-item {{ request()->is('laporanSapras') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('laporanSapras') }}">
-                                <i class="align-middle" data-feather="home"></i> <span
-                                    class="align-middle">Sarana Prasarana</span>
+                                <i data-feather="archive"></i>
+                                <span>Sarana Prasarana</span>
                             </a>
                         </li>
-                        {{-- <li class="sidebar-item">
-                            <a data-target="#spp" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="dollar-sign"></i> <span
-                                    class="align-middle">Pembayaran</span>
-                            </a>
-                            <ul id="spp" class="sidebar-dropdown list-unstyled collapse"
-                                data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewSpp') ? 'active' : '' }}"><a
-                                        class="sidebar-link" href="{{ route('viewSpp') }}">SPP</a>
-                                </li>
-                            </ul>
-                        </li> --}}
 
+                        <li class="sidebar-header">Sistem</li>
+
+                        <!-- Settings Dropdown -->
                         <li class="sidebar-item">
                             <a data-target="#settings" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="settings"></i> <span
-                                    class="align-middle">Settings</span>
+                                <i data-feather="settings"></i>
+                                <span>Pengaturan</span>
                             </a>
-                            <ul id="settings" class="sidebar-dropdown list-unstyled collapse"
-                                data-parent="#sidebar">
+                            <ul id="settings" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
                                 <li class="sidebar-item {{ request()->is('viewSettings') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('viewSettings') }}">Setting</a>
+                                    <a class="sidebar-link" href="{{ route('viewSettings') }}">Pengaturan Sistem</a>
                                 </li>
-                            </ul>
-                            <ul id="settings" class="sidebar-dropdown list-unstyled collapse"
-                                data-parent="#sidebar">
                                 <li class="sidebar-item {{ request()->is('viewJadwal') ? 'active' : '' }}">
-                                    <a class="sidebar-link" href="{{ route('viewJadwal') }}">Jadwal Pelajaran</a>
+                                    <a class="sidebar-link" href="{{ route('viewJadwal') }}">Setting Jadwal</a>
                                 </li>
                             </ul>
                         </li>
                     @else
                         <li class="sidebar-item">
                             <a data-target="#settings" data-toggle="collapse" class="sidebar-link collapsed">
-                                <i class="align-middle" data-feather="settings"></i> <span
-                                    class="align-middle">Settings</span>
+                                <i data-feather="settings"></i>
+                                <span>Settings</span>
                             </a>
-                            <ul id="settings" class="sidebar-dropdown list-unstyled collapse "
-                                data-parent="#sidebar">
+                            <ul id="settings" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
                                 <li class="sidebar-item {{ request()->is('viewSettings') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewSettings') }}">Setting</a>
                                 </li>
@@ -268,304 +713,168 @@
             </div>
         </nav>
 
+        <!-- Main Content Panel -->
         <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg">
-                <a class="sidebar-toggle d-flex">
-                    <i class="hamburger align-self-center"></i>
-                </a>
-                <form class="d-none d-sm-inline-block">
-                    <div class="input-group input-group-navbar">
-                        <h4 id="clock"></h4>
+            <!-- Header Navbar -->
+            <header class="navbar-custom">
+                <div class="d-flex align-items-center gap-3">
+                    <button id="sidebar-toggle-btn" class="sidebar-toggle-btn">
+                        <i data-feather="menu"></i>
+                    </button>
+
+                    <!-- Search Bar in Header -->
+                    <div class="header-search d-none d-md-block">
+                        <i data-feather="search" class="header-search-icon"></i>
+                        <input type="text" placeholder="Cari data, menu..." aria-label="Search">
+                        <span class="header-shortcut-badge">Ctrl+/</span>
                     </div>
-                </form>
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav navbar-align">
-                        {{-- <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown"
-                                data-toggle="dropdown">
-                                <div class="position-relative">
-                                    <i class="align-middle" data-feather="bell"></i>
-                                    <span class="indicator">4</span>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0"
-                                aria-labelledby="alertsDropdown">
-                                <div class="dropdown-menu-header">
-                                    4 New Notifications
-                                </div>
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-danger" data-feather="alert-circle"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Update completed</div>
-                                                <div class="text-muted small mt-1">Restart server 12 to complete
-                                                    the
-                                                    update.</div>
-                                                <div class="text-muted small mt-1">30m ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-warning" data-feather="bell"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Lorem ipsum</div>
-                                                <div class="text-muted small mt-1">Aliquam ex eros, imperdiet
-                                                    vulputate
-                                                    hendrerit et.</div>
-                                                <div class="text-muted small mt-1">2h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-primary" data-feather="home"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Login from 192.186.1.8</div>
-                                                <div class="text-muted small mt-1">5h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-success" data-feather="user-plus"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">New connection</div>
-                                                <div class="text-muted small mt-1">Christina accepted your request.
-                                                </div>
-                                                <div class="text-muted small mt-1">14h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="dropdown-menu-footer">
-                                    <a href="#" class="text-muted">Show all notifications</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown"
-                                data-toggle="dropdown">
-                                <div class="position-relative">
-                                    <i class="align-middle" data-feather="message-square"></i>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0"
-                                aria-labelledby="messagesDropdown">
-                                <div class="dropdown-menu-header">
-                                    <div class="position-relative">
-                                        4 New Messages
-                                    </div>
-                                </div>
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <img src="{{ asset('adminkit/img/avatars/avatar-5.jpg') }}"
-                                                    class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
-                                            </div>
-                                            <div class="col-10 pl-2">
-                                                <div class="text-dark">Vanessa Tucker</div>
-                                                <div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis
-                                                    arcu tortor.</div>
-                                                <div class="text-muted small mt-1">15m ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <img src="{{ asset('adminkit/img/avatars/avatar-2.jpg') }}"
-                                                    class="avatar img-fluid rounded-circle" alt="William Harris">
-                                            </div>
-                                            <div class="col-10 pl-2">
-                                                <div class="text-dark">William Harris</div>
-                                                <div class="text-muted small mt-1">Curabitur ligula sapien euismod
-                                                    vitae.</div>
-                                                <div class="text-muted small mt-1">2h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <img src="{{ asset('adminkit/img/avatars/avatar-4.jpg') }}"
-                                                    class="avatar img-fluid rounded-circle" alt="Christina Mason">
-                                            </div>
-                                            <div class="col-10 pl-2">
-                                                <div class="text-dark">Christina Mason</div>
-                                                <div class="text-muted small mt-1">Pellentesque auctor neque nec
-                                                    urna.
-                                                </div>
-                                                <div class="text-muted small mt-1">4h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <img src="{{ asset('adminkit/img/avatars/avatar-3.jpg') }}"
-                                                    class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
-                                            </div>
-                                            <div class="col-10 pl-2">
-                                                <div class="text-dark">Sharon Lessman</div>
-                                                <div class="text-muted small mt-1">Aenean tellus metus, bibendum
-                                                    sed,
-                                                    posuere ac, mattis non.</div>
-                                                <div class="text-muted small mt-1">5h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="dropdown-menu-footer">
-                                    <a href="#" class="text-muted">Show all messages</a>
-                                </div>
-                            </div>
-                        </li> --}}
-                        <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
-                                data-toggle="dropdown">
-                                <i class="align-middle" data-feather="settings"></i>
-                            </a>
-
-                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
-                                data-toggle="dropdown">
-                                <img src="{{ asset('upload/3.png') }}" class="avatar img-fluid rounded mr-1"
-                                    alt="Charles Hall" /> <span class="text-dark">{{ $member->nama_member }}</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="pages-profile.html"><i class="align-middle mr-1"
-                                        data-feather="user"></i> Profile</a>
-                                <a class="dropdown-item" href="#"><i class="align-middle mr-1"
-                                        data-feather="pie-chart"></i> Analytics</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="pages-settings.html"><i class="align-middle mr-1"
-                                        data-feather="settings"></i> Settings & Privacy</a>
-                                <a class="dropdown-item" href="#"><i class="align-middle mr-1"
-                                        data-feather="help-circle"></i> Help Center</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('signOut') }}">Log out</a>
-                            </div>
-                        </li>
-                    </ul>
                 </div>
-            </nav>
 
+                <div class="header-right">
+                    <!-- Realtime Clock Badge -->
+                    <div class="clock-badge d-none d-sm-flex">
+                        <i data-feather="clock" style="width: 14px; height: 14px;"></i>
+                        <span id="clock">--:--:--</span>
+                    </div>
+
+                    <!-- Quick Notifications / Actions -->
+                    <div class="header-action-icon d-none d-md-flex">
+                        <i data-feather="bell" style="width: 18px; height: 18px;"></i>
+                        <span class="header-action-badge">3</span>
+                    </div>
+
+                    <!-- User Profile Dropdown -->
+                    <div class="dropdown">
+                        <div class="user-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ asset('upload/3.png') }}" class="user-dropdown-avatar" alt="Avatar" />
+                            <span class="user-dropdown-name d-none d-sm-inline-block">{{ $member->nama_member ?? 'User' }}</span>
+                            <i data-feather="chevron-down" style="width: 14px; height: 14px; color: #64748b;"></i>
+                        </div>
+                        <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 mt-2" style="border-radius: 12px; font-size: 0.88rem;">
+                            <a class="dropdown-item py-2 px-3" href="#"><i data-feather="user" class="mr-2" style="width: 16px; height: 16px;"></i> Profile</a>
+                            <a class="dropdown-item py-2 px-3" href="{{ route('viewSettings') }}"><i data-feather="settings" class="mr-2" style="width: 16px; height: 16px;"></i> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item py-2 px-3 text-danger" href="{{ route('signOut') }}"><i data-feather="log-out" class="mr-2" style="width: 16px; height: 16px;"></i> Log out</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Body Content -->
             <main class="content">
                 @if (session('success'))
                     <script>
-                        Swal.fire(
-                            'Success',
-                            '{{ session('success') }}',
-                            'success'
-                        )
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: '{{ session('success') }}',
+                            icon: 'success',
+                            confirmButtonColor: '#2563eb'
+                        });
                     </script>
                 @endif
                 @if (session('warning'))
                     <script>
-                        Swal.fire(
-                            'Opps,',
-                            '{{ session('warning') }}',
-                            'warning'
-                        )
+                        Swal.fire({
+                            title: 'Perhatian',
+                            text: '{{ session('warning') }}',
+                            icon: 'warning',
+                            confirmButtonColor: '#2563eb'
+                        });
                     </script>
                 @endif
-                @yield('content')
 
+                @yield('content')
             </main>
 
+            <!-- Footer -->
             <footer class="footer">
                 <div class="container-fluid">
-                    <div class="row text-muted">
+                    <div class="row text-muted align-items-center">
                         <div class="col-6 text-left">
                             <p class="mb-0">
-                                <a href="#" class="text-muted"><strong>IT Tasikmalaya</strong></a> &copy;
+                                <strong>Artanita System</strong> &copy; {{ date('Y') }} - All rights reserved.
                             </p>
+                        </div>
+                        <div class="col-6 text-right" style="font-size: 0.8rem; color: #94a3b8;">
+                            Powered by IT Tasikmalaya
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
+
+    <!-- AdminKit Core JS & Feather Icons -->
     <script src="{{ asset('adminkit/js/app.js') }}"></script>
+
     <script>
         $(document).ready(function() {
+            // Sidebar Toggle
+            $('#sidebar-toggle-btn').on('click', function() {
+                $('#sidebar').toggleClass('collapsed');
+            });
 
-            function kapitalDepan($kata) {
-                if (!empty($kata)) {
-                    $kata[0] = strtoupper($kata[0]);
-                }
-                return $kata;
+            // Mask Money Init
+            if ($.fn.maskMoney) {
+                $('.uang').maskMoney({
+                    thousands: ',',
+                    precision: 0
+                });
             }
 
-            $('.uang').maskMoney({
-                thousands: ',',
-                precision: 0
-            });
-
+            // SweetAlert Delete Confirmation
             $('.delete').on("click", function(e) {
                 e.preventDefault();
+                var href = $(this).attr('data-href');
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Apakah anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonColor: '#ef4444',
+                    cancelButtonColor: '#64748b',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = $(this).attr('data-href');
-                        Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
-                            'success'
-                        )
+                        window.location.href = href;
                     }
-                })
+                });
             });
 
-            $('.datatables').DataTable({
-                responsive: true,
-                lengthChange: false,
-                ordering: false,
-                info: false
-            });
-
-            $('.select2').select2();
-
-            $('.datepicker').datepicker({
-                dateFormat: 'yy-mm-dd',
-            });
-
-            function enableHorizontalScroll() {
-                $('.table-reponsive').each(function() {
-                    var containerWidth = $(this).width();
-                    var tableWidth = $('table', this).outerWidth();
-                    if (tableWidth > containerWidth) {
-                        $(this).addClass('scrollable');
-                    } else {
-                        $(this).removeClass('scrollable');
+            // DataTables Global Init
+            if ($.fn.DataTable) {
+                $('.datatables').DataTable({
+                    responsive: true,
+                    lengthChange: false,
+                    ordering: false,
+                    info: false,
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Cari data..."
                     }
                 });
             }
 
-            $(window).on('resize', enableHorizontalScroll);
-            enableHorizontalScroll();
+            // Select2 Init
+            if ($.fn.select2) {
+                $('.select2').select2({
+                    width: '100%'
+                });
+            }
 
+            // Datepicker Init
+            if ($.fn.datepicker) {
+                $('.datepicker').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                });
+            }
+
+            // Realtime Clock Updater
             function updateClock() {
                 var now = new Date();
                 var date = now.getDate();
-                var month = now.getMonth() + 1;
+                var month = now.getMonth();
                 var year = now.getFullYear();
                 var hours = now.getHours();
                 var minutes = now.getMinutes();
@@ -579,15 +888,14 @@
                     "Januari", "Februari", "Maret", "April", "Mei", "Juni",
                     "Juli", "Agustus", "September", "Oktober", "November", "Desember"
                 ];
-                var time = date + " " + bulan[month - 1] + " " + year + " " + hours + ":" + minutes + ":" + seconds;
 
-                $('#clock').html(time);
+                var timeStr = date + " " + bulan[month] + " " + year + " • " + hours + ":" + minutes + ":" + seconds;
+                $('#clock').text(timeStr);
             }
+
             setInterval(updateClock, 1000);
             updateClock();
-
         });
     </script>
 </body>
-
 </html>
