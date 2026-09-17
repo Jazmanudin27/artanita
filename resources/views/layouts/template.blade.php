@@ -473,6 +473,37 @@
             overflow-x: auto;
         }
 
+        /* High-Visibility Crisp Table Styling */
+        .table, table, .table-bordered, table.dataTable {
+            border-collapse: collapse !important;
+            width: 100% !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        .table th, table th, .table td, table td,
+        .table-bordered th, .table-bordered td,
+        table.dataTable th, table.dataTable td {
+            border: 1px solid #cbd5e1 !important;
+            padding: 0.75rem 1rem !important;
+            vertical-align: middle !important;
+        }
+
+        .table thead th, table thead th, table.dataTable thead th {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            font-weight: 700 !important;
+            font-size: 0.82rem !important;
+            border-bottom: 2px solid #94a3b8 !important;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8fafc !important;
+        }
+
+        .table tbody tr:hover, table.dataTable tbody tr:hover {
+            background-color: #f1f5f9 !important;
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
@@ -538,54 +569,57 @@
                         @endauth
 
                         <!-- Data Master Dropdown -->
+                        @php $isDataMasterActive = request()->is('viewGuru*') || request()->is('viewSiswa*') || request()->is('viewKelas*') || request()->is('viewMapel*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#ui" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#ui" data-toggle="collapse" class="sidebar-link {{ $isDataMasterActive ? '' : 'collapsed' }}" aria-expanded="{{ $isDataMasterActive ? 'true' : 'false' }}">
                                 <i data-feather="database"></i>
                                 <span>Data Master</span>
                             </a>
-                            <ul id="ui" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewGuru') ? 'active' : '' }}">
+                            <ul id="ui" class="sidebar-dropdown list-unstyled collapse {{ $isDataMasterActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewGuru*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewGuru') }}">Data Guru</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewSiswa') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('viewSiswa*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewSiswa') }}">Data Siswa</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewKelas') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('viewKelas*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewKelas') }}">Data Kelas</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewMapel') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('viewMapel*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewMapel') }}">Mata Pelajaran</a>
                                 </li>
                             </ul>
                         </li>
 
                         <!-- Surat Dropdown -->
+                        @php $isSuratActive = request()->is('viewSuratAbsen*') || request()->is('viewSuratTeguran*') || request()->is('viewSuratDispensasi*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#surat" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#surat" data-toggle="collapse" class="sidebar-link {{ $isSuratActive ? '' : 'collapsed' }}" aria-expanded="{{ $isSuratActive ? 'true' : 'false' }}">
                                 <i data-feather="mail"></i>
                                 <span>Surat Menyurat</span>
                             </a>
-                            <ul id="surat" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewSuratAbsen') ? 'active' : '' }}">
+                            <ul id="surat" class="sidebar-dropdown list-unstyled collapse {{ $isSuratActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewSuratAbsen*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewSuratAbsen') }}">Absen Guru</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewSuratTeguran') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('viewSuratTeguran*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewSuratTeguran') }}">Surat Teguran</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewSuratDispensasi') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('viewSuratDispensasi*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewSuratDispensasi') }}">Dispensasi</a>
                                 </li>
                             </ul>
                         </li>
 
                         <!-- Absensi Dropdown -->
+                        @php $isAbsensiActive = request()->is('viewAbsensiSiswa*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#absensi" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#absensi" data-toggle="collapse" class="sidebar-link {{ $isAbsensiActive ? '' : 'collapsed' }}" aria-expanded="{{ $isAbsensiActive ? 'true' : 'false' }}">
                                 <i data-feather="check-square"></i>
                                 <span>Presensi & Absensi</span>
                             </a>
-                            <ul id="absensi" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewAbsensiSiswa') ? 'active' : '' }}">
+                            <ul id="absensi" class="sidebar-dropdown list-unstyled collapse {{ $isAbsensiActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewAbsensiSiswa') }}">Absensi Siswa</a>
                                 </li>
                             </ul>
@@ -594,61 +628,64 @@
                         <li class="sidebar-header">Laporan & Rekap</li>
 
                         <!-- Laporan Master Dropdown -->
+                        @php $isLapMasterActive = request()->is('laporanSiswa*') || request()->is('laporanGuru*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#report" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#report" data-toggle="collapse" class="sidebar-link {{ $isLapMasterActive ? '' : 'collapsed' }}" aria-expanded="{{ $isLapMasterActive ? 'true' : 'false' }}">
                                 <i data-feather="file-text"></i>
                                 <span>Laporan Master</span>
                             </a>
-                            <ul id="report" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('laporanSiswa') ? 'active' : '' }}">
+                            <ul id="report" class="sidebar-dropdown list-unstyled collapse {{ $isLapMasterActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('laporanSiswa*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanSiswa') }}">Laporan Siswa</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('laporanGuru') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('laporanGuru*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanGuru') }}">Laporan Guru</a>
                                 </li>
                             </ul>
                         </li>
 
                         <!-- Laporan Absensi Dropdown -->
+                        @php $isLapAbsensiActive = request()->is('laporanPresensi*') || request()->is('laporanAbsensiSiswa*') || request()->is('laporanAbsensiMapel*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#report2" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#report2" data-toggle="collapse" class="sidebar-link {{ $isLapAbsensiActive ? '' : 'collapsed' }}" aria-expanded="{{ $isLapAbsensiActive ? 'true' : 'false' }}">
                                 <i data-feather="clipboard"></i>
                                 <span>Laporan Absensi</span>
                             </a>
-                            <ul id="report2" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('laporanPresensi') ? 'active' : '' }}">
+                            <ul id="report2" class="sidebar-dropdown list-unstyled collapse {{ $isLapAbsensiActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('laporanPresensi*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanPresensi') }}">Presensi Guru</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('laporanAbsensiSiswa') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('laporanAbsensiSiswa*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanAbsensiSiswa') }}">Absensi Siswa</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('laporanAbsensiMapel') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('laporanAbsensiMapel*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanAbsensiMapel') }}">Absensi Mapel</a>
                                 </li>
                             </ul>
                         </li>
 
                         <!-- Laporan Surat Dropdown -->
+                        @php $isLapSuratActive = request()->is('laporanSuratAbsen*') || request()->is('laporanSuratTeguran*') || request()->is('laporanSuratDispensasi*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#report3" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#report3" data-toggle="collapse" class="sidebar-link {{ $isLapSuratActive ? '' : 'collapsed' }}" aria-expanded="{{ $isLapSuratActive ? 'true' : 'false' }}">
                                 <i data-feather="send"></i>
                                 <span>Laporan Surat</span>
                             </a>
-                            <ul id="report3" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('laporanSuratAbsen') ? 'active' : '' }}">
+                            <ul id="report3" class="sidebar-dropdown list-unstyled collapse {{ $isLapSuratActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('laporanSuratAbsen*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanSuratAbsen') }}">Surat Absen</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('laporanSuratTeguran') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('laporanSuratTeguran*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanSuratTeguran') }}">Surat Teguran</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('laporanSuratDispensasi') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('laporanSuratDispensasi*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('laporanSuratDispensasi') }}">Surat Dispensasi</a>
                                 </li>
                             </ul>
                         </li>
 
                         <!-- Jadwal Pelajaran -->
-                        <li class="sidebar-item {{ request()->is('cetakLaporanJadwal') ? 'active' : '' }}">
+                        <li class="sidebar-item {{ request()->is('cetakLaporanJadwal*') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('cetakLaporanJadwal') }}" target="_blank">
                                 <i data-feather="calendar"></i>
                                 <span>Jadwal Pelajaran</span>
@@ -656,23 +693,24 @@
                         </li>
 
                         <!-- Perpustakaan -->
+                        @php $isPerpusActive = request()->is('viewBuku*') || request()->is('viewPeminjaman*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#perpustakaan" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#perpustakaan" data-toggle="collapse" class="sidebar-link {{ $isPerpusActive ? '' : 'collapsed' }}" aria-expanded="{{ $isPerpusActive ? 'true' : 'false' }}">
                                 <i data-feather="book-open"></i>
                                 <span>Perpustakaan</span>
                             </a>
-                            <ul id="perpustakaan" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewBuku') ? 'active' : '' }}">
+                            <ul id="perpustakaan" class="sidebar-dropdown list-unstyled collapse {{ $isPerpusActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewBuku*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewBuku') }}">Katalog Buku</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewPeminjaman') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('viewPeminjaman*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewPeminjaman') }}">Peminjaman Buku</a>
                                 </li>
                             </ul>
                         </li>
 
                         <!-- Sarana Prasarana -->
-                        <li class="sidebar-item {{ request()->is('laporanSapras') ? 'active' : '' }}">
+                        <li class="sidebar-item {{ request()->is('laporanSapras*') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('laporanSapras') }}">
                                 <i data-feather="archive"></i>
                                 <span>Sarana Prasarana</span>
@@ -682,16 +720,17 @@
                         <li class="sidebar-header">Sistem</li>
 
                         <!-- Settings Dropdown -->
+                        @php $isSettingsActive = request()->is('viewSettings*') || request()->is('viewJadwal*'); @endphp
                         <li class="sidebar-item">
-                            <a data-target="#settings" data-toggle="collapse" class="sidebar-link collapsed">
+                            <a data-target="#settings" data-toggle="collapse" class="sidebar-link {{ $isSettingsActive ? '' : 'collapsed' }}" aria-expanded="{{ $isSettingsActive ? 'true' : 'false' }}">
                                 <i data-feather="settings"></i>
                                 <span>Pengaturan</span>
                             </a>
-                            <ul id="settings" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
-                                <li class="sidebar-item {{ request()->is('viewSettings') ? 'active' : '' }}">
+                            <ul id="settings" class="sidebar-dropdown list-unstyled collapse {{ $isSettingsActive ? 'show' : '' }}" data-parent="#sidebar">
+                                <li class="sidebar-item {{ request()->is('viewSettings*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewSettings') }}">Pengaturan Sistem</a>
                                 </li>
-                                <li class="sidebar-item {{ request()->is('viewJadwal') ? 'active' : '' }}">
+                                <li class="sidebar-item {{ request()->is('viewJadwal*') ? 'active' : '' }}">
                                     <a class="sidebar-link" href="{{ route('viewJadwal') }}">Setting Jadwal</a>
                                 </li>
                             </ul>
@@ -809,6 +848,13 @@
 
     <script>
         $(document).ready(function() {
+            // Keep Active Parent Dropdown Open
+            $('.sidebar-dropdown .sidebar-item.active').each(function() {
+                var $dropdown = $(this).closest('.sidebar-dropdown');
+                $dropdown.addClass('show');
+                $dropdown.prev('.sidebar-link').removeClass('collapsed').attr('aria-expanded', 'true');
+            });
+
             // Sidebar Toggle
             $('#sidebar-toggle-btn').on('click', function() {
                 $('#sidebar').toggleClass('collapsed');
