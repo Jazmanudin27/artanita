@@ -23,22 +23,19 @@
     <script src="https://unpkg.com/leaflet-geolocation/dist/leaflet-geolocation.min.js"></script>
     <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
 
-    <!-- Responsive Mobile UI Enhancements -->
+    <!-- Responsive Mobile Menu Fix -->
     <style>
         body {
             background-color: #f1f5f9 !important;
         }
 
-        /* Fixed 4-Column Responsive Menu Grid */
+        /* Responsive 4-Column Menu Grid */
         .menu {
-            display: grid !important;
-            grid-template-columns: repeat(4, 1fr) !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: flex-start !important;
             gap: 12px 8px !important;
-            padding: 15px 10px !important;
-            background: #ffffff !important;
-            border-radius: 18px !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
-            border: 1px solid #e2e8f0 !important;
+            padding: 10px 12px 0 12px !important;
         }
 
         .menu a {
@@ -46,124 +43,45 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            text-decoration: none !important;
-            padding: 8px 4px !important;
+            width: calc(25% - 6px) !important;
+            box-sizing: border-box !important;
+            margin-bottom: 10px !important;
+            transform: none !important; /* Remove broken -40% Y translation */
+            background: #006eff !important;
             border-radius: 12px !important;
-            transition: all 0.2s ease !important;
+            padding: 12px 4px !important;
+            box-shadow: 0 4px 10px rgba(0, 110, 255, 0.2) !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            transition: transform 0.15s ease, background-color 0.15s ease !important;
         }
 
-        .menu a:active, .menu a:hover {
-            background-color: #f8fafc !important;
-            transform: translateY(-2px);
+        .menu a:active {
+            transform: scale(0.94) !important;
+            background: #0056cc !important;
         }
 
         .menu a .icon-menu, .menu a img {
-            width: 44px !important;
-            height: 44px !important;
+            width: 32px !important;
+            height: 32px !important;
+            max-width: 100% !important;
             object-fit: contain !important;
             margin-bottom: 6px !important;
+            display: block !important;
         }
 
         .menu a span {
-            font-size: 0.72rem !important;
+            font-size: 11px !important;
             font-weight: 600 !important;
-            color: #334155 !important;
+            color: #ffffff !important;
+            margin-top: 2px !important;
             text-align: center !important;
             line-height: 1.2 !important;
             white-space: nowrap !important;
             overflow: hidden !important;
             text-overflow: ellipsis !important;
             width: 100% !important;
-        }
-
-        /* Wallet Header Card */
-        .wallet-card {
-            background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
-            border-radius: 20px !important;
-            padding: 20px !important;
-            color: #ffffff !important;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25) !important;
-            border: none !important;
-        }
-
-        .wallet-card .balance .total {
-            color: #ffffff !important;
-            font-size: 1.3rem !important;
-            font-weight: 700 !important;
-        }
-
-        .wallet-card .balance .title {
-            color: rgba(255, 255, 255, 0.8) !important;
-            font-size: 0.8rem !important;
-        }
-
-        .wallet-card .avatar {
-            width: 48px !important;
-            height: 48px !important;
-            border-radius: 14px !important;
-            border: 2px solid rgba(255, 255, 255, 0.3) !important;
-        }
-
-        .wallet-card .wallet-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
-            margin-top: 15px !important;
-            padding-top: 15px !important;
-            display: flex !important;
-            justify-content: space-around !important;
-        }
-
-        .wallet-card .wallet-footer .item strong {
-            color: #ffffff !important;
-            font-size: 0.75rem !important;
-            margin-top: 4px !important;
-        }
-
-        /* Stat Box Enhancement */
-        .stat-box {
-            border-radius: 16px !important;
-            padding: 15px !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
-        }
-
-        /* App Bottom Navigation Bar */
-        .appBottomMenu {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(12px) !important;
-            border-top: 1px solid #e2e8f0 !important;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
-            height: 65px !important;
-        }
-
-        .appBottomMenu .item strong {
-            font-size: 0.7rem !important;
-            font-weight: 600 !important;
-        }
-
-        .appBottomMenu .item.active {
-            color: #2563eb !important;
-        }
-
-        .appBottomMenu .item.active ion-icon {
-            color: #2563eb !important;
-        }
-
-        .appBottomMenu .big-icon {
-            background: linear-gradient(135deg, #2563eb, #00d2ff) !important;
-            width: 54px !important;
-            height: 54px !important;
-            border-radius: 50% !important;
-            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4) !important;
-            border: 4px solid #ffffff !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            margin: -20px auto 0 !important;
-        }
-
-        .appBottomMenu .big-icon ion-icon {
-            color: #ffffff !important;
-            font-size: 26px !important;
+            display: block !important;
         }
     </style>
 </head>
