@@ -164,4 +164,66 @@ class AbsensiController extends Controller
             ]);
         });
     }
+
+    public function rekapAbsensiSiswa()
+    {
+        return view('absensi.rekapAbsensiSiswa');
+    }
+
+    public function showRekapAbsensiSiswa(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_kelas = $request->kode_kelas;
+
+        $kelas = DB::table('kelas')->where('kode_kelas', $kode_kelas)->first();
+
+        $siswa = DB::table('siswa')
+            ->select('siswa.kode_siswa', 'siswa.nama_siswa', 'siswa.nis', 'kelas.nama_kelas')
+            ->selectRaw("SUM(CASE WHEN abs.status = 'H' THEN 1 ELSE 0 END) as total_hadir")
+            ->selectRaw("SUM(CASE WHEN abs.status = 'S' THEN 1 ELSE 0 END) as total_sakit")
+            ->selectRaw("SUM(CASE WHEN abs.status = 'I' THEN 1 ELSE 0 END) as total_izin")
+            ->selectRaw("SUM(CASE WHEN abs.status = 'A' THEN 1 ELSE 0 END) as total_alfa")
+            ->leftJoin(DB::raw("(SELECT kode_siswa, status FROM absensi_siswa WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun') as abs"), 'siswa.kode_siswa', '=', 'abs.kode_siswa')
+            ->join('kelas', 'kelas.kode_kelas', 'siswa.kode_kelas')
+            ->where('siswa.kode_kelas', $kode_kelas)
+            ->where('siswa.status', 'Aktif')
+            ->groupBy('siswa.kode_siswa', 'siswa.nama_siswa', 'siswa.nis', 'kelas.nama_kelas')
+            ->orderBy('siswa.nama_siswa', 'ASC')
+            ->get();
+
+        return view('absensi.showRekapAbsensiSiswa', compact('siswa', 'bulan', 'tahun', 'kelas'));
+    }
+
+    public function rekapAbsensiMapel()
+    {
+        return view('absensi.rekapAbsensiMapel');
+    }
+
+    public function showRekapAbsensiMapel(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_kelas = $request->kode_kelas;
+        $kode_mapel = $request->kode_mapel;
+
+        $kelas = DB::table('kelas')->where('kode_kelas', $kode_kelas)->first();
+        $mapel = DB::table('mapel')->where('kode_mapel', $kode_mapel)->first();
+
+        $siswa = DB::table('siswa')
+            ->select('siswa.kode_siswa', 'siswa.nama_siswa', 'siswa.nis', 'kelas.nama_kelas')
+            ->selectRaw("SUM(CASE WHEN abs.status = 'H' THEN 1 ELSE 0 END) as total_hadir")
+            ->selectRaw("SUM(CASE WHEN abs.status = 'S' THEN 1 ELSE 0 END) as total_sakit")
+            ->selectRaw("SUM(CASE WHEN abs.status = 'I' THEN 1 ELSE 0 END) as total_izin")
+            ->selectRaw("SUM(CASE WHEN abs.status = 'A' THEN 1 ELSE 0 END) as total_alfa")
+            ->leftJoin(DB::raw("(SELECT kode_siswa, status FROM absensi_mapel WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' AND kode_mapel = '$kode_mapel') as abs"), 'siswa.kode_siswa', '=', 'abs.kode_siswa')
+            ->join('kelas', 'kelas.kode_kelas', 'siswa.kode_kelas')
+            ->where('siswa.kode_kelas', $kode_kelas)
+            ->where('siswa.status', 'Aktif')
+            ->groupBy('siswa.kode_siswa', 'siswa.nama_siswa', 'siswa.nis', 'kelas.nama_kelas')
+            ->orderBy('siswa.nama_siswa', 'ASC')
+            ->get();
+
+        return view('absensi.showRekapAbsensiMapel', compact('siswa', 'bulan', 'tahun', 'kelas', 'mapel'));
+    }
 }

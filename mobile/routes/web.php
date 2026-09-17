@@ -43,6 +43,11 @@ Route::controller(AbsensiController::class)->group(function () {
     Route::get('viewAbsensiMapel', 'viewAbsensiMapel')->name('viewAbsensiMapel');
     Route::post('showAbsensiMapel', 'showAbsensiMapel')->name('showAbsensiMapel');
     Route::post('createAbsensiMapel', 'createAbsensiMapel')->name('createAbsensiMapel');
+
+    Route::get('rekapAbsensiSiswa', 'rekapAbsensiSiswa')->name('rekapAbsensiSiswa');
+    Route::post('showRekapAbsensiSiswa', 'showRekapAbsensiSiswa')->name('showRekapAbsensiSiswa');
+    Route::get('rekapAbsensiMapel', 'rekapAbsensiMapel')->name('rekapAbsensiMapel');
+    Route::post('showRekapAbsensiMapel', 'showRekapAbsensiMapel')->name('showRekapAbsensiMapel');
 });
 
 Route::controller(MapelController::class)->group(function () {

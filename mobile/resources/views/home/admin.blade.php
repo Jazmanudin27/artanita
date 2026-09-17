@@ -154,8 +154,16 @@
                     <img src="{{ 'assets/img/icon/6.png' }}" class="icon-menu">
                     <span>Absen Mapel</span>
                 </a>
+                <a href="{{ route('rekapAbsensiSiswa') }}">
+                    <img src="{{ asset('assets/img/icon/1.png') }}" class="icon-menu">
+                    <span>Rekap Siswa</span>
+                </a>
+                <a href="{{ route('rekapAbsensiMapel') }}">
+                    <img src="{{ asset('assets/img/icon/10.png') }}" class="icon-menu">
+                    <span>Rekap Mapel</span>
+                </a>
                 <a href="{{ route('viewJadwal') }}">
-                    <img src="{{ 'assets/img/icon/9.png' }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/9.png') }}" class="icon-menu">
                     <span>Jadwal</span>
                 </a>
             </div>
