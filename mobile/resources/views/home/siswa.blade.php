@@ -116,11 +116,11 @@
                     <span>Absen Mapel</span>
                 </a>
                 <a href="{{ route('rekapAbsensiSiswa') }}">
-                    <img src="{{ asset('assets/img/icon/1.png') }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/7.png') }}" class="icon-menu">
                     <span>Rekap Siswa</span>
                 </a>
                 <a href="{{ route('rekapAbsensiMapel') }}">
-                    <img src="{{ asset('assets/img/icon/10.png') }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/5.png') }}" class="icon-menu">
                     <span>Rekap Mapel</span>
                 </a>
                 <a href="{{ route('viewJadwal') }}">
