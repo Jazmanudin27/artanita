@@ -488,7 +488,7 @@
         .table-bordered th, .table-bordered td,
         table.dataTable th, table.dataTable td {
             border: 1px solid #cbd5e1 !important;
-            padding: 0.75rem 1rem !important;
+            padding: 0.4rem 0.75rem !important;
             vertical-align: middle !important;
         }
 
