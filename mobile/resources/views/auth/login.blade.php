@@ -332,6 +332,37 @@
                     <p>Silakan masuk menggunakan akun Anda</p>
                 </div>
 
+                @if (session('warning'))
+                    <div style="background-color: #FEF3C7; border: 1.5px solid #FCD34D; color: #92400E; padding: 14px 16px; border-radius: 16px; font-size: 13px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <ion-icon name="alert-circle-outline" style="font-size: 22px; flex-shrink: 0; color: #D97706;"></ion-icon>
+                        <span>{{ session('warning') }}</span>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div style="background-color: #FEE2E2; border: 1.5px solid #FCA5A5; color: #991B1B; padding: 14px 16px; border-radius: 16px; font-size: 13px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <ion-icon name="alert-circle-outline" style="font-size: 22px; flex-shrink: 0; color: #DC2626;"></ion-icon>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div style="background-color: #D1FAE5; border: 1.5px solid #6EE7B7; color: #065F46; padding: 14px 16px; border-radius: 16px; font-size: 13px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <ion-icon name="checkmark-circle-outline" style="font-size: 22px; flex-shrink: 0; color: #059669;"></ion-icon>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div style="background-color: #FEE2E2; border: 1.5px solid #FCA5A5; color: #991B1B; padding: 14px 16px; border-radius: 16px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                        <ul style="margin: 0; padding-left: 18px;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('customLogin') }}" method="POST" autocomplete="off">
                     @csrf
                     

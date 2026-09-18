@@ -51,6 +51,11 @@ return [
             'provider' => 'guru',
         ],
 
+        'kelas' => [
+            'driver' => 'session',
+            'provider' => 'kelas',
+        ],
+
     ],
 
     /*
@@ -84,6 +89,11 @@ return [
         'guru' => [
             'driver' => 'eloquent',
             'model' => App\Models\Guru::class,
+        ],
+
+        'kelas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Kelas::class,
         ],
 
         // 'users' => [

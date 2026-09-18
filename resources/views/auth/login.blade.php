@@ -154,6 +154,34 @@
             <p class="login-subtitle">Sistem Informasi SMK Artanita</p>
         </div>
 
+        @if (session('warning'))
+            <div style="background-color: #FEF3C7; border: 1.5px solid #FCD34D; color: #92400E; padding: 12px 16px; border-radius: 14px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                ⚠️ {{ session('warning') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div style="background-color: #FEE2E2; border: 1.5px solid #FCA5A5; color: #991B1B; padding: 12px 16px; border-radius: 14px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                ❌ {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div style="background-color: #D1FAE5; border: 1.5px solid #6EE7B7; color: #065F46; padding: 12px 16px; border-radius: 14px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                ✅ {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div style="background-color: #FEE2E2; border: 1.5px solid #FCA5A5; color: #991B1B; padding: 12px 16px; border-radius: 14px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                <ul style="margin: 0; padding-left: 18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('customLogin') }}" method="POST" autocomplete="off">
             @csrf
             

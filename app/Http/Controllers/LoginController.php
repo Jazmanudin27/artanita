@@ -15,6 +15,8 @@ class LoginController extends Controller
             return view('home.dashboardSiswa');
         } else if (Auth::guard('guru')->check()) {
             return view('home.dashboardGuru');
+        } else if (Auth::guard('kelas')->check()) {
+            return view('home.dashboardAdmin');
         } else if (Auth::check()) {
             return view('home.dashboardAdmin');
         }  else {
@@ -30,14 +32,17 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('username', 'password');
+
         if (Auth::attempt($credentials)) {
-            return view('home.dashboardAdmin');
+            return redirect()->intended('dashboard');
         } else if (Auth::guard('siswa')->attempt($credentials)) {
-            return view('home.dashboardSiswa');
+            return redirect()->intended('dashboard');
         } else if (Auth::guard('guru')->attempt($credentials)) {
-            return view('home.dashboardGuru');
+            return redirect()->intended('dashboard');
+        } else if (Auth::guard('kelas')->attempt($credentials)) {
+            return redirect()->intended('dashboard');
         } else {
-            return view('auth.login');
+            return redirect()->back()->with('warning', 'Username atau Password salah!')->withInput($request->only('username'));
         }
     }
 
@@ -45,7 +50,8 @@ class LoginController extends Controller
     {
         Auth::guard('siswa')->logout();
         Auth::guard('guru')->logout();
+        Auth::guard('kelas')->logout();
         Auth::logout();
-        return Redirect('/');
+        return redirect('/');
     }
 }
