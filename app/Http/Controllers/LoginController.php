@@ -57,14 +57,29 @@ class LoginController extends Controller
         try {
             if ($this->hasTbl('users')) {
                 $user = \App\Models\User::where(function($q) use ($loginInput) {
-                    $q->where('email', $loginInput)
-                      ->orWhereRaw("LOWER(TRIM(email)) = ?", [strtolower($loginInput)]);
+                    $hasCond = false;
                     if ($this->hasCol('users', 'username')) {
-                        $q->orWhere('username', $loginInput)
+                        $q->where('username', $loginInput)
                           ->orWhereRaw("LOWER(TRIM(username)) = ?", [strtolower($loginInput)]);
+                        $hasCond = true;
+                    }
+                    if ($this->hasCol('users', 'email')) {
+                        if ($hasCond) {
+                            $q->orWhere('email', $loginInput)
+                              ->orWhereRaw("LOWER(TRIM(email)) = ?", [strtolower($loginInput)]);
+                        } else {
+                            $q->where('email', $loginInput)
+                              ->orWhereRaw("LOWER(TRIM(email)) = ?", [strtolower($loginInput)]);
+                            $hasCond = true;
+                        }
                     }
                     if ($this->hasCol('users', 'name')) {
-                        $q->orWhere('name', $loginInput);
+                        if ($hasCond) {
+                            $q->orWhere('name', $loginInput);
+                        } else {
+                            $q->where('name', $loginInput);
+                            $hasCond = true;
+                        }
                     }
                 })->first();
 

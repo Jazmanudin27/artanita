@@ -54,16 +54,28 @@ class GuruController extends Controller
         // Also insert into users table if present
         if ($simpan && Schema::hasTable('users')) {
             try {
-                DB::table('users')->updateOrInsert(
-                    ['email' => $request->email],
-                    [
-                        'name' => $request->nama_guru,
-                        'username' => $username,
-                        'password' => $hashedPassword,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]
-                );
+                $userMatch = [];
+                $userPayload = [
+                    'name' => $request->nama_guru,
+                    'password' => $hashedPassword,
+                    'updated_at' => now(),
+                ];
+
+                if (Schema::hasColumn('users', 'username')) {
+                    $userMatch['username'] = $username;
+                    $userPayload['username'] = $username;
+                }
+                if (Schema::hasColumn('users', 'email')) {
+                    $userMatch['email'] = $request->email;
+                    $userPayload['email'] = $request->email;
+                }
+                if (empty($userMatch) && Schema::hasColumn('users', 'name')) {
+                    $userMatch['name'] = $request->nama_guru;
+                }
+
+                if (!empty($userMatch)) {
+                    DB::table('users')->updateOrInsert($userMatch, $userPayload);
+                }
             } catch (\Throwable $e) {}
         }
 
