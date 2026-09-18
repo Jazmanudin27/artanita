@@ -76,6 +76,16 @@
             font-size: 22px !important;
         }
 
+        .appBottomMenu a, .appBottomMenu .item {
+            cursor: pointer !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+        .appBottomMenu a * {
+            pointer-events: none !important;
+        }
+
         /* Responsive 4-Column Menu Grid */
         .menu {
             display: flex !important;
@@ -101,6 +111,13 @@
             color: #ffffff !important;
             text-decoration: none !important;
             transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+            cursor: pointer !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+        .menu a * {
+            pointer-events: none !important;
         }
 
         .menu a:active {
