@@ -28,6 +28,7 @@
                     
                     <div class="status-select-wrapper">
                         <select class="form-control status-pill-select" data-kelas="{{ $s->kode_kelas }}" data-id="{{ $s->kode_siswa }}"
+                                {{ (Auth::guard('kelas')->check() || Auth::guard('siswa')->check()) ? 'disabled' : '' }}
                                 style="background-color: {{ $bgColor }}; color: {{ $textColor }}; border: 1.5px solid {{ $textColor }}; border-radius: 10px; font-weight: 700; font-size: 0.82rem; padding: 6px 12px; cursor: pointer; transition: all 0.2s ease;">
                             <option {{ $s->status == 'H' || !$s->status ? 'selected' : '' }} value="H" style="background:#fff; color:#16a34a;">Hadir</option>
                             <option {{ $s->status == 'S' ? 'selected' : '' }} value="S" style="background:#fff; color:#d97706;">Sakit</option>

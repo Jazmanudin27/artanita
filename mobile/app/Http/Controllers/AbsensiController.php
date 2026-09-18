@@ -156,6 +156,10 @@ class AbsensiController extends Controller
 
     public function createAbsensiMapel(Request $request)
     {
+        if (!Auth::guard('guru')->check() && !Auth::check()) {
+            return response()->json(['status' => 'error', 'message' => 'Input absensi mata pelajaran hanya dapat dilakukan oleh Guru.'], 403);
+        }
+
         $tanggal = $request->input('tanggal');
         $kodeSiswa = $request->input('kode_siswa');
         $kodeKelas = $request->input('kode_kelas');

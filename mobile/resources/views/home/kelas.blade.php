@@ -496,14 +496,14 @@
                 <ion-icon name="chevron-forward-outline" class="action-arrow"></ion-icon>
             </a>
 
-            <!-- Card 3: Absensi Per Mata Pelajaran -->
-            <a href="{{ route('viewAbsensiMapel') }}" class="modern-action-card">
+            <!-- Card 3: Rekap Absensi Per Mata Pelajaran -->
+            <a href="{{ route('rekapAbsensiMapel') }}" class="modern-action-card">
                 <div class="action-icon-badge bg-icon-amber">
                     <ion-icon name="book-outline"></ion-icon>
                 </div>
                 <div class="action-content">
-                    <h3 class="action-title">Absensi Mata Pelajaran</h3>
-                    <p class="action-desc">Log kehadiran siswa per jam mata pelajaran</p>
+                    <h3 class="action-title">Rekap Absensi Mata Pelajaran</h3>
+                    <p class="action-desc">Lihat laporan & rekapan presensi per mata pelajaran</p>
                 </div>
                 <ion-icon name="chevron-forward-outline" class="action-arrow"></ion-icon>
             </a>
