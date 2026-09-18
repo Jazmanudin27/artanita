@@ -77,6 +77,20 @@ class LoginController extends Controller
 
         // 5. Fallback for legacy plain text / MD5 passwords
         try {
+            $webUser = DB::table('users')->where('email', $loginInput)->orWhere('username', $loginInput)->first();
+            if ($webUser && !empty($webUser->password)) {
+                $isMatch = ($webUser->password === $password || 
+                            md5($password) === $webUser->password || 
+                            sha1($password) === $webUser->password ||
+                            \Illuminate\Support\Facades\Hash::check($password, $webUser->password));
+                if ($isMatch) {
+                    DB::table('users')->where('id', $webUser->id)->update(['password' => bcrypt($password)]);
+                    Auth::guard('web')->loginUsingId($webUser->id);
+                    $request->session()->regenerate();
+                    return redirect()->intended('dashboard');
+                }
+            }
+
             $guru = DB::table('guru')->where('username', $loginInput)->orWhere('email', $loginInput)->first();
             if ($guru && !empty($guru->password) && ($guru->password === $password || md5($password) === $guru->password)) {
                 DB::table('guru')->where('kode_guru', $guru->kode_guru)->update(['password' => bcrypt($password)]);
