@@ -59,7 +59,7 @@
             width: calc(25% - 6px) !important;
             box-sizing: border-box !important;
             margin-bottom: 10px !important;
-            transform: none !important; /* Remove broken -40% Y translation */
+            transform: none !important;
             background: #006eff !important;
             border-radius: 12px !important;
             padding: 12px 4px !important;
@@ -127,8 +127,7 @@
                 </div>
             </a>
         </div>
-    @endif
-    @if (Auth::guard('siswa')->check())
+    @elseif (Auth::guard('siswa')->check())
         <div class="appBottomMenu">
             <a href="{{ route('dashboard') }}" class="item {{ request()->is('dashboard*') ? 'active' : '' }}">
                 <div class="col">
@@ -137,7 +136,7 @@
                 </div>
             </a>
             <a href="{{ route('viewAbsensiSiswa') }}"
-                class=" {{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
+                class="{{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
                 <div class="big-icon">
                     <ion-icon name="finger-print-outline" class="icon"></ion-icon>
                 </div>
@@ -149,7 +148,7 @@
                 </div>
             </a>
         </div>
-    @if (Auth::guard('kelas')->check() || Auth::check())
+    @elseif (Auth::guard('kelas')->check() || Auth::check())
         <div class="appBottomMenu">
             <a href="{{ route('dashboard') }}" class="item {{ request()->is('dashboard*') ? 'active' : '' }}">
                 <div class="col">
@@ -170,6 +169,7 @@
             </a>
         </div>
     @endif
+
     <script src="{{ asset('assets/js/lib/bootstrap.bundle.min.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="{{ asset('assets/js/plugins/splide/splide.min.js') }}"></script>
