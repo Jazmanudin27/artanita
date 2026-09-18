@@ -23,7 +23,7 @@
 
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%);
+            --primary-gradient: linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #2563EB 100%);
             --button-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
             --button-hover: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
         }
@@ -42,56 +42,56 @@
         .login-hero {
             background: var(--primary-gradient);
             position: relative;
-            padding: 48px 24px 72px 24px;
-            border-bottom-right-radius: 36px;
-            border-bottom-left-radius: 36px;
+            padding: 52px 24px 76px 24px;
+            border-bottom-right-radius: 40px;
+            border-bottom-left-radius: 40px;
             text-align: center;
             overflow: hidden;
-            box-shadow: 0 12px 30px -10px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.4);
         }
 
         /* Ambient Glow Background Circles */
         .login-hero::before {
             content: '';
             position: absolute;
-            top: -40px;
-            left: -40px;
-            width: 180px;
-            height: 180px;
-            background: rgba(255, 255, 255, 0.15);
+            top: -50px;
+            left: -50px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
             border-radius: 50%;
-            blur: 20px;
+            pointer-events: none;
         }
 
         .login-hero::after {
             content: '';
             position: absolute;
-            bottom: -20px;
-            right: -20px;
-            width: 140px;
-            height: 140px;
-            background: rgba(255, 255, 255, 0.12);
+            bottom: -30px;
+            right: -30px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
             border-radius: 50%;
+            pointer-events: none;
         }
 
         .logo-badge {
-            width: 88px;
-            height: 88px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
+            width: 90px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-radius: 26px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             padding: 12px;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-            margin-bottom: 16px;
-            transform: translateY(0);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+            margin-bottom: 18px;
             transition: transform 0.3s ease;
         }
 
         .logo-badge:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.02);
         }
 
         .logo-badge img {
@@ -102,11 +102,11 @@
 
         .brand-title {
             color: #FFFFFF;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: -0.5px;
             margin: 0 0 4px 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         }
 
         .brand-subtitle {
@@ -114,12 +114,13 @@
             font-size: 13px;
             font-weight: 500;
             margin: 0;
+            letter-spacing: 0.2px;
         }
 
         .login-container {
             max-width: 440px;
             width: 100%;
-            margin: -40px auto 24px auto;
+            margin: -44px auto 24px auto;
             padding: 0 20px;
             box-sizing: border-box;
             position: relative;
@@ -128,9 +129,9 @@
 
         .login-card {
             background: #FFFFFF;
-            border-radius: 28px;
-            padding: 32px 24px;
-            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8);
+            border-radius: 30px;
+            padding: 34px 26px;
+            box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.9);
         }
 
         .form-header {
@@ -140,15 +141,17 @@
 
         .form-header h2 {
             font-size: 20px;
-            font-weight: 700;
+            font-weight: 800;
             color: #0F172A;
             margin: 0 0 6px 0;
+            letter-spacing: -0.3px;
         }
 
         .form-header p {
             font-size: 13px;
             color: #64748B;
             margin: 0;
+            font-weight: 500;
         }
 
         .custom-form-group {
@@ -158,7 +161,7 @@
         .custom-form-group label {
             display: block;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             color: #334155;
             margin-bottom: 8px;
         }
@@ -189,7 +192,7 @@
             border-radius: 16px;
             padding: 0 44px 0 48px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: #0F172A;
             box-sizing: border-box;
             outline: none;
@@ -238,11 +241,11 @@
             background: var(--button-gradient);
             color: #FFFFFF;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 800;
             border: none;
             border-radius: 16px;
             cursor: pointer;
-            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.4);
             transition: all 0.25s ease;
             display: flex;
             align-items: center;
@@ -254,8 +257,8 @@
 
         .btn-submit-gradient:hover {
             background: var(--button-hover);
-            box-shadow: 0 12px 24px -5px rgba(37, 99, 235, 0.5);
-            transform: translateY(-1px);
+            box-shadow: 0 16px 30px -6px rgba(37, 99, 235, 0.5);
+            transform: translateY(-2px);
         }
 
         .btn-submit-gradient:active {
@@ -268,12 +271,6 @@
             padding: 16px 24px 28px 24px;
             color: #94A3B8;
             font-size: 12px;
-            font-weight: 500;
-        }
-
-        .app-footer a {
-            color: #2563EB;
-            text-decoration: none;
             font-weight: 600;
         }
 
@@ -293,15 +290,15 @@
         }
 
         .loading-icon {
-            width: 60px;
-            height: 60px;
+            width: 64px;
+            height: 64px;
             animation: pulse 1.5s infinite ease-in-out;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.9); opacity: 0.7; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(0.9); opacity: 0.7; }
+            0% { transform: scale(0.92); opacity: 0.7; }
+            50% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(0.92); opacity: 0.7; }
         }
     </style>
 </head>

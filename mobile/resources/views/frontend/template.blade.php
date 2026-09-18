@@ -23,23 +23,57 @@
     <script src="https://unpkg.com/leaflet-geolocation/dist/leaflet-geolocation.min.js"></script>
     <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
 
-    <!-- Responsive Mobile Menu Fix & High Contrast Cards -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Responsive Mobile Menu Fix & Modern Glass Bottom Nav -->
     <style>
         body {
-            background-color: #eef2f6 !important;
+            background-color: #F8FAFC !important;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
         }
 
         /* High Contrast Cards for Mobile */
         .card, .section .card {
             background-color: #ffffff !important;
-            border: 1px solid #cbd5e1 !important;
-            border-radius: 16px !important;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 8px 20px -6px rgba(15, 23, 42, 0.05) !important;
         }
 
         .card-body {
             background-color: #ffffff !important;
-            border-radius: 16px !important;
+            border-radius: 20px !important;
+        }
+
+        /* Modern Glass Bottom Menu */
+        .appBottomMenu {
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
+            box-shadow: 0 -10px 25px -5px rgba(15, 23, 42, 0.06) !important;
+            height: 64px !important;
+        }
+
+        .appBottomMenu .item {
+            color: #64748B !important;
+            transition: color 0.2s ease, transform 0.2s ease !important;
+        }
+
+        .appBottomMenu .item.active {
+            color: #2563EB !important;
+        }
+
+        .appBottomMenu .item .col strong {
+            font-weight: 700 !important;
+            font-size: 11px !important;
+        }
+
+        .appBottomMenu .item ion-icon {
+            font-size: 22px !important;
         }
 
         /* Responsive 4-Column Menu Grid */
@@ -60,18 +94,17 @@
             box-sizing: border-box !important;
             margin-bottom: 10px !important;
             transform: none !important;
-            background: #006eff !important;
-            border-radius: 12px !important;
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+            border-radius: 16px !important;
             padding: 12px 4px !important;
-            box-shadow: 0 4px 10px rgba(0, 110, 255, 0.2) !important;
+            box-shadow: 0 8px 18px -4px rgba(37, 99, 235, 0.35) !important;
             color: #ffffff !important;
             text-decoration: none !important;
-            transition: transform 0.15s ease, background-color 0.15s ease !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
         }
 
         .menu a:active {
-            transform: scale(0.94) !important;
-            background: #0056cc !important;
+            transform: scale(0.95) !important;
         }
 
         .menu a .icon-menu, .menu a img {
@@ -85,7 +118,7 @@
 
         .menu a span {
             font-size: 11px !important;
-            font-weight: 600 !important;
+            font-weight: 700 !important;
             color: #ffffff !important;
             margin-top: 2px !important;
             text-align: center !important;
