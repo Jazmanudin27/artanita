@@ -50,164 +50,162 @@ class LoginController extends Controller
         ]);
 
         $loginInput = trim($request->username);
-        $password = $request->password;
+        $password = trim($request->password);
+        $rawPassword = $request->password;
 
-        // 1. Try Web Guard (users table)
+        // 1. Try Users Table (web guard)
         try {
             if ($this->hasTbl('users')) {
-                if (Auth::guard('web')->attempt(['email' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-                if ($this->hasCol('users', 'username') && Auth::guard('web')->attempt(['username' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-            }
-        } catch (\Throwable $e) {}
+                $user = \App\Models\User::where(function($q) use ($loginInput) {
+                    $q->where('email', $loginInput)
+                      ->orWhereRaw("LOWER(TRIM(email)) = ?", [strtolower($loginInput)]);
+                    if ($this->hasCol('users', 'username')) {
+                        $q->orWhere('username', $loginInput)
+                          ->orWhereRaw("LOWER(TRIM(username)) = ?", [strtolower($loginInput)]);
+                    }
+                    if ($this->hasCol('users', 'name')) {
+                        $q->orWhere('name', $loginInput);
+                    }
+                })->first();
 
-        // 2. Try Guru Guard (guru table)
-        try {
-            if ($this->hasTbl('guru')) {
-                if ($this->hasCol('guru', 'email') && Auth::guard('guru')->attempt(['email' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-                if ($this->hasCol('guru', 'username') && Auth::guard('guru')->attempt(['username' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-                if ($this->hasCol('guru', 'nip_nuptk') && Auth::guard('guru')->attempt(['nip_nuptk' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-            }
-        } catch (\Throwable $e) {}
+                if ($user && !empty($user->password)) {
+                    $dbPass = $user->password;
+                    $isMatch = ($dbPass === $rawPassword ||
+                                $dbPass === $password ||
+                                md5($rawPassword) === $dbPass ||
+                                md5($password) === $dbPass ||
+                                sha1($rawPassword) === $dbPass ||
+                                sha1($password) === $dbPass ||
+                                Hash::check($rawPassword, $dbPass) ||
+                                Hash::check($password, $dbPass));
 
-        // 3. Try Siswa Guard (siswa table)
-        try {
-            if ($this->hasTbl('siswa')) {
-                if ($this->hasCol('siswa', 'nisn') && Auth::guard('siswa')->attempt(['nisn' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-                if ($this->hasCol('siswa', 'username') && Auth::guard('siswa')->attempt(['username' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-                if ($this->hasCol('siswa', 'email') && Auth::guard('siswa')->attempt(['email' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-            }
-        } catch (\Throwable $e) {}
-
-        // 4. Try Kelas Guard (kelas table)
-        try {
-            if ($this->hasTbl('kelas')) {
-                if ($this->hasCol('kelas', 'username') && Auth::guard('kelas')->attempt(['username' => $loginInput, 'password' => $password])) {
-                    $request->session()->regenerate();
-                    return redirect()->intended('/dashboard');
-                }
-            }
-        } catch (\Throwable $e) {}
-
-        // 5. Fallback for legacy plain text / MD5 / SHA1 passwords across tables
-        try {
-            // Check users table
-            if ($this->hasTbl('users')) {
-                $userQuery = DB::table('users')->where('email', $loginInput);
-                if ($this->hasCol('users', 'username')) {
-                    $userQuery->orWhere('username', $loginInput);
-                }
-                $webUser = $userQuery->first();
-                if ($webUser && !empty($webUser->password)) {
-                    $isMatch = ($webUser->password === $password || 
-                                md5($password) === $webUser->password || 
-                                sha1($password) === $webUser->password ||
-                                Hash::check($password, $webUser->password));
                     if ($isMatch) {
-                        DB::table('users')->where('id', $webUser->id)->update(['password' => bcrypt($password)]);
-                        Auth::guard('web')->loginUsingId($webUser->id);
+                        try {
+                            $user->password = Hash::make($password);
+                            $user->save();
+                        } catch (\Throwable $e) {}
+
+                        Auth::guard('web')->login($user, true);
+                        Auth::login($user, true);
                         $request->session()->regenerate();
                         return redirect()->intended('/dashboard');
                     }
                 }
             }
+        } catch (\Throwable $e) {}
 
-            // Check guru table
-            if (Schema::hasTable('guru')) {
-                $guruQuery = DB::table('guru');
-                $conditions = [];
-                if (Schema::hasColumn('guru', 'email')) $conditions[] = 'email';
-                if (Schema::hasColumn('guru', 'username')) $conditions[] = 'username';
-                if (Schema::hasColumn('guru', 'nip_nuptk')) $conditions[] = 'nip_nuptk';
-
-                if (!empty($conditions)) {
-                    $guruQuery->where(function($q) use ($conditions, $loginInput) {
-                        foreach ($conditions as $idx => $col) {
-                            if ($idx === 0) $q->where($col, $loginInput);
-                            else $q->orWhere($col, $loginInput);
-                        }
-                    });
-                    $guru = $guruQuery->first();
-                    if ($guru && !empty($guru->password)) {
-                        $isMatch = ($guru->password === $password || 
-                                    md5($password) === $guru->password || 
-                                    sha1($password) === $guru->password ||
-                                    Hash::check($password, $guru->password));
-                        if ($isMatch) {
-                            DB::table('guru')->where('kode_guru', $guru->kode_guru)->update(['password' => bcrypt($password)]);
-                            Auth::guard('guru')->loginUsingId($guru->kode_guru);
-                            $request->session()->regenerate();
-                            return redirect()->intended('/dashboard');
-                        }
+        // 2. Try Guru Table (guru guard)
+        try {
+            if ($this->hasTbl('guru')) {
+                $guru = \App\Models\Guru::where(function($q) use ($loginInput) {
+                    if ($this->hasCol('guru', 'email')) {
+                        $q->where('email', $loginInput)
+                          ->orWhereRaw("LOWER(TRIM(email)) = ?", [strtolower($loginInput)]);
                     }
-                }
-            }
-
-            // Check siswa table
-            if (Schema::hasTable('siswa')) {
-                $siswaQuery = DB::table('siswa');
-                $conditions = [];
-                if (Schema::hasColumn('siswa', 'nisn')) $conditions[] = 'nisn';
-                if (Schema::hasColumn('siswa', 'username')) $conditions[] = 'username';
-                if (Schema::hasColumn('siswa', 'email')) $conditions[] = 'email';
-
-                if (!empty($conditions)) {
-                    $siswaQuery->where(function($q) use ($conditions, $loginInput) {
-                        foreach ($conditions as $idx => $col) {
-                            if ($idx === 0) $q->where($col, $loginInput);
-                            else $q->orWhere($col, $loginInput);
-                        }
-                    });
-                    $siswa = $siswaQuery->first();
-                    if ($siswa && !empty($siswa->password)) {
-                        $isMatch = ($siswa->password === $password || 
-                                    md5($password) === $siswa->password || 
-                                    sha1($password) === $siswa->password ||
-                                    Hash::check($password, $siswa->password));
-                        if ($isMatch) {
-                            DB::table('siswa')->where('kode_siswa', $siswa->kode_siswa)->update(['password' => bcrypt($password)]);
-                            Auth::guard('siswa')->loginUsingId($siswa->kode_siswa);
-                            $request->session()->regenerate();
-                            return redirect()->intended('/dashboard');
-                        }
+                    if ($this->hasCol('guru', 'username')) {
+                        $q->orWhere('username', $loginInput)
+                          ->orWhereRaw("LOWER(TRIM(username)) = ?", [strtolower($loginInput)]);
                     }
-                }
-            }
+                    if ($this->hasCol('guru', 'nip_nuptk')) {
+                        $q->orWhere('nip_nuptk', $loginInput);
+                    }
+                })->first();
 
-            // Check kelas table
-            if (Schema::hasTable('kelas') && Schema::hasColumn('kelas', 'username')) {
-                $kelas = DB::table('kelas')->where('username', $loginInput)->first();
-                if ($kelas && !empty($kelas->password)) {
-                    $isMatch = ($kelas->password === $password || 
-                                md5($password) === $kelas->password || 
-                                sha1($password) === $kelas->password ||
-                                Hash::check($password, $kelas->password));
+                if ($guru && !empty($guru->password)) {
+                    $dbPass = $guru->password;
+                    $isMatch = ($dbPass === $rawPassword ||
+                                $dbPass === $password ||
+                                md5($rawPassword) === $dbPass ||
+                                md5($password) === $dbPass ||
+                                sha1($rawPassword) === $dbPass ||
+                                sha1($password) === $dbPass ||
+                                Hash::check($rawPassword, $dbPass) ||
+                                Hash::check($password, $dbPass));
+
                     if ($isMatch) {
-                        DB::table('kelas')->where('kode_kelas', $kelas->kode_kelas)->update(['password' => bcrypt($password)]);
-                        Auth::guard('kelas')->loginUsingId($kelas->kode_kelas);
+                        try {
+                            $guru->password = Hash::make($password);
+                            $guru->save();
+                        } catch (\Throwable $e) {}
+
+                        Auth::guard('guru')->login($guru, true);
+                        $request->session()->regenerate();
+                        return redirect()->intended('/dashboard');
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        // 3. Try Siswa Table (siswa guard)
+        try {
+            if ($this->hasTbl('siswa')) {
+                $siswa = \App\Models\Siswa::where(function($q) use ($loginInput) {
+                    if ($this->hasCol('siswa', 'nisn')) {
+                        $q->where('nisn', $loginInput);
+                    }
+                    if ($this->hasCol('siswa', 'username')) {
+                        $q->orWhere('username', $loginInput)
+                          ->orWhereRaw("LOWER(TRIM(username)) = ?", [strtolower($loginInput)]);
+                    }
+                    if ($this->hasCol('siswa', 'email')) {
+                        $q->orWhere('email', $loginInput)
+                          ->orWhereRaw("LOWER(TRIM(email)) = ?", [strtolower($loginInput)]);
+                    }
+                })->first();
+
+                if ($siswa && !empty($siswa->password)) {
+                    $dbPass = $siswa->password;
+                    $isMatch = ($dbPass === $rawPassword ||
+                                $dbPass === $password ||
+                                md5($rawPassword) === $dbPass ||
+                                md5($password) === $dbPass ||
+                                sha1($rawPassword) === $dbPass ||
+                                sha1($password) === $dbPass ||
+                                Hash::check($rawPassword, $dbPass) ||
+                                Hash::check($password, $dbPass));
+
+                    if ($isMatch) {
+                        try {
+                            $siswa->password = Hash::make($password);
+                            $siswa->save();
+                        } catch (\Throwable $e) {}
+
+                        Auth::guard('siswa')->login($siswa, true);
+                        $request->session()->regenerate();
+                        return redirect()->intended('/dashboard');
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        // 4. Try Kelas Table (kelas guard)
+        try {
+            if ($this->hasTbl('kelas')) {
+                $kelas = \App\Models\Kelas::where(function($q) use ($loginInput) {
+                    if ($this->hasCol('kelas', 'username')) {
+                        $q->where('username', $loginInput)
+                          ->orWhereRaw("LOWER(TRIM(username)) = ?", [strtolower($loginInput)]);
+                    }
+                })->first();
+
+                if ($kelas && !empty($kelas->password)) {
+                    $dbPass = $kelas->password;
+                    $isMatch = ($dbPass === $rawPassword ||
+                                $dbPass === $password ||
+                                md5($rawPassword) === $dbPass ||
+                                md5($password) === $dbPass ||
+                                sha1($rawPassword) === $dbPass ||
+                                sha1($password) === $dbPass ||
+                                Hash::check($rawPassword, $dbPass) ||
+                                Hash::check($password, $dbPass));
+
+                    if ($isMatch) {
+                        try {
+                            $kelas->password = Hash::make($password);
+                            $kelas->save();
+                        } catch (\Throwable $e) {}
+
+                        Auth::guard('kelas')->login($kelas, true);
                         $request->session()->regenerate();
                         return redirect()->intended('/dashboard');
                     }
