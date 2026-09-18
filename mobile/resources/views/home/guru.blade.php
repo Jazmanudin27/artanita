@@ -136,10 +136,10 @@
                 </a>
                 @if (Auth::guard('guru')->check() && Auth::guard('guru')->user()->kode_guru == 1)
                 @else
-                <a href="{{ route('viewMapel') }}">
-                    <img src="{{ asset('assets/img/icon/5.png') }}" class="icon-menu">
-                    <span>Mapel</span>
-                </a>
+                    <a href="{{ route('viewMapel') }}">
+                        <img src="{{ asset('assets/img/icon/5.png') }}" class="icon-menu">
+                        <span>Mapel</span>
+                    </a>
                 @endif
                 <a href="{{ route('viewPresensi') }}">
                     <img src="{{ asset('assets/img/icon/7.png') }}" class="icon-menu">
@@ -149,24 +149,18 @@
                     <img src="{{ asset('assets/img/icon/8.png') }}" class="icon-menu">
                     <span>Absen Siswa</span>
                 </a>
-                @if (Auth::guard('guru')->check() && Auth::guard('guru')->user()->kode_guru == 1)
-                @else
                 <a href="{{ route('viewAbsensiMapel') }}">
                     <img src="{{ asset('assets/img/icon/6.png') }}" class="icon-menu">
                     <span>Absen Mapel</span>
                 </a>
-                @endif
                 <a href="{{ route('rekapAbsensiSiswa') }}">
                     <img src="{{ asset('assets/img/icon/7.png') }}" class="icon-menu">
                     <span>Rekap Siswa</span>
                 </a>
-                @if (Auth::guard('guru')->check() && Auth::guard('guru')->user()->kode_guru == 1)
-                @else
                 <a href="{{ route('rekapAbsensiMapel') }}">
                     <img src="{{ asset('assets/img/icon/5.png') }}" class="icon-menu">
                     <span>Rekap Mapel</span>
                 </a>
-                @endif
                 <a href="{{ route('rekapPresensiGuru') }}">
                     <img src="{{ asset('assets/img/icon/2.png') }}" class="icon-menu">
                     <span>Rekap Guru</span>
