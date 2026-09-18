@@ -16,13 +16,13 @@
         $siswaL = DB::table('siswa')
             ->where('kode_kelas', $kodeKelas)
             ->where('status', 'Aktif')
-            ->where('jk', 'Laki-Laki')
+            ->whereIn('jk', ['L', 'Laki-Laki', 'Laki-laki', 'LAKI-LAKI'])
             ->count();
 
         $siswaP = DB::table('siswa')
             ->where('kode_kelas', $kodeKelas)
             ->where('status', 'Aktif')
-            ->where('jk', 'Perempuan')
+            ->whereIn('jk', ['P', 'Perempuan', 'PEREMPUAN'])
             ->count();
 
         $today = date('Y-m-d');
