@@ -73,6 +73,14 @@ class LoginController extends Controller
                             $hasCond = true;
                         }
                     }
+                    if ($this->hasCol('users', 'nama_lengkap')) {
+                        if ($hasCond) {
+                            $q->orWhere('nama_lengkap', $loginInput);
+                        } else {
+                            $q->where('nama_lengkap', $loginInput);
+                            $hasCond = true;
+                        }
+                    }
                     if ($this->hasCol('users', 'name')) {
                         if ($hasCond) {
                             $q->orWhere('name', $loginInput);
