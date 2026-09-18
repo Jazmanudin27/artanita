@@ -12,9 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('kelas', function (Blueprint $table) {
-            $table->string('username', 100)->nullable()->after('kode_member');
-            $table->string('password', 255)->nullable()->after('username');
-            $table->string('remember_token', 100)->nullable()->after('password');
+            if (!Schema::hasColumn('kelas', 'username')) {
+                $table->string('username', 100)->nullable()->after('kode_member');
+            }
+            if (!Schema::hasColumn('kelas', 'password')) {
+                $table->string('password', 255)->nullable()->after('username');
+            }
+            if (!Schema::hasColumn('kelas', 'remember_token')) {
+                $table->string('remember_token', 100)->nullable()->after('password');
+            }
         });
     }
 
@@ -24,7 +30,19 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('kelas', function (Blueprint $table) {
-            $table->dropColumn(['username', 'password', 'remember_token']);
+            $columns = [];
+            if (Schema::hasColumn('kelas', 'username')) {
+                $columns[] = 'username';
+            }
+            if (Schema::hasColumn('kelas', 'password')) {
+                $columns[] = 'password';
+            }
+            if (Schema::hasColumn('kelas', 'remember_token')) {
+                $columns[] = 'remember_token';
+            }
+            if (!empty($columns)) {
+                $table->dropColumn($columns);
+            }
         });
     }
 };
