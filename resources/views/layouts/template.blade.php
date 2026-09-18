@@ -208,7 +208,324 @@
             pointer-events: none;
         }
 
-        /* Mobile Responsive Off-Canvas & Mobile Touch Improvements */
+        .sidebar-link:hover {
+            color: #ffffff;
+            background: var(--portal-sidebar-hover);
+        }
+
+        .sidebar-link:hover i, .sidebar-link:hover svg {
+            color: var(--portal-accent);
+        }
+
+        .sidebar-item.active > .sidebar-link {
+            color: #ffffff;
+            background: linear-gradient(90deg, #1d4ed8, #2563eb);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+        }
+
+        .sidebar-item.active > .sidebar-link i, .sidebar-item.active > .sidebar-link svg {
+            color: #ffffff;
+        }
+
+        /* Submenu Styling */
+        .sidebar-dropdown {
+            padding-left: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .sidebar-dropdown .sidebar-link {
+            font-size: 0.83rem;
+            padding: 0.5rem 0.85rem 0.5rem 1.8rem;
+            color: #94a3b8;
+            position: relative;
+        }
+
+        .sidebar-dropdown .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #475569;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-dropdown .sidebar-item.active .sidebar-link::before,
+        .sidebar-dropdown .sidebar-link:hover::before {
+            background-color: var(--portal-accent);
+            box-shadow: 0 0 8px var(--portal-accent);
+        }
+
+        /* Main Content Wrapper */
+        .main {
+            flex-grow: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--portal-bg);
+        }
+
+        /* Header Navbar */
+        .navbar-custom {
+            background: #ffffff;
+            border-bottom: 1px solid var(--portal-border);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .sidebar-toggle-btn {
+            background: #f1f5f9;
+            border: 1px solid var(--portal-border);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--portal-text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: #e2e8f0;
+            color: var(--portal-text-dark);
+        }
+
+        /* Search Box in Header */
+        .header-search {
+            position: relative;
+            width: 280px;
+        }
+
+        .header-search input {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            font-size: 0.85rem;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .header-search input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .header-search-icon {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            width: 16px;
+            height: 16px;
+        }
+
+        .header-shortcut-badge {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: #94a3b8;
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Clock & Action Items */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .clock-badge {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1e293b;
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clock-badge i {
+            color: #2563eb;
+        }
+
+        .header-action-icon {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .header-action-icon:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .header-action-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 10px;
+            border: 2px solid #ffffff;
+        }
+
+        .user-dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 10px 4px 4px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-dropdown-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .user-dropdown-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .user-dropdown-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--portal-text-dark);
+        }
+
+        /* Content Area Container */
+        .content {
+            padding: 1.75rem 1.75rem 2.5rem;
+            flex-grow: 1;
+        }
+
+        /* Card Enhancements for Page Content */
+        .card {
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 14px !important;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .card-header {
+            background-color: inherit;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+            padding: 1.25rem 1.5rem !important;
+        }
+
+        .card-body {
+            background-color: inherit;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--portal-text-dark);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer.footer {
+            background: #ffffff;
+            border-top: 1px solid var(--portal-border);
+            padding: 1rem 1.75rem;
+            font-size: 0.83rem;
+            color: var(--portal-text-muted);
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        /* High-Visibility Crisp Table Styling */
+        .table, table, .table-bordered, table.dataTable {
+            border-collapse: collapse !important;
+            width: 100% !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        .table th, table th, .table td, table td,
+        .table-bordered th, .table-bordered td,
+        table.dataTable th, table.dataTable td {
+            border: 1px solid #cbd5e1 !important;
+            padding: 0.4rem 0.75rem !important;
+            vertical-align: middle !important;
+        }
+
+        .table thead th, table thead th, table.dataTable thead th {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            font-weight: 700 !important;
+            font-size: 0.82rem !important;
+            border-bottom: 2px solid #94a3b8 !important;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8fafc !important;
+        }
+
+        .table tbody tr:hover, table.dataTable tbody tr:hover {
+            background-color: #f1f5f9 !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.03);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.15);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.25);
+        }
+
+        /* Mobile Responsive Off-Canvas Drawer Styles */
         @media (max-width: 991.98px) {
             #sidebar {
                 position: fixed !important;
@@ -222,7 +539,7 @@
                 box-shadow: 8px 0 25px rgba(0, 0, 0, 0.25) !important;
             }
 
-            #sidebar.show-mobile, #sidebar:not(.collapsed) {
+            #sidebar.show-mobile, #sidebar.show {
                 margin-left: 0 !important;
             }
 
@@ -252,7 +569,7 @@
 <body>
     <div class="wrapper">
         <!-- Sidebar Navigation -->
-        <nav id="sidebar" class="sidebar collapsed">
+        <nav id="sidebar" class="sidebar">
             <!-- Brand Logo -->
             <div class="sidebar-brand-wrapper">
                 <div class="sidebar-brand-logo">P</div>
@@ -580,29 +897,8 @@
                 $('body').append('<div class="sidebar-backdrop"></div>');
             }
 
-            // Sync Desktop vs Mobile initial state
-            function initSidebarState() {
-                if ($(window).width() <= 991.98) {
-                    $('#sidebar').addClass('collapsed');
-                } else {
-                    $('#sidebar').removeClass('collapsed');
-                }
-            }
-            initSidebarState();
-
-            function syncMobileSidebarState() {
-                if ($(window).width() <= 991.98) {
-                    if (!$('#sidebar').hasClass('collapsed')) {
-                        $('.sidebar-backdrop').addClass('show');
-                        $('body').css('overflow', 'hidden');
-                    } else {
-                        $('.sidebar-backdrop').removeClass('show');
-                        $('body').css('overflow', '');
-                    }
-                } else {
-                    $('.sidebar-backdrop').removeClass('show');
-                    $('body').css('overflow', '');
-                }
+            function isMobile() {
+                return $(window).width() <= 991.98;
             }
 
             // Keep Active Parent Dropdown Open
@@ -612,46 +908,68 @@
                 $dropdown.prev('.sidebar-link').removeClass('collapsed').attr('aria-expanded', 'true');
             });
 
-            // Sidebar Toggle Button Click
+            // Sidebar Toggle Button Click (Desktop & Mobile)
             $('#sidebar-toggle-btn').on('click touchstart', function(e) {
                 e.preventDefault();
-                $('#sidebar').toggleClass('collapsed');
-                syncMobileSidebarState();
+                if (isMobile()) {
+                    $('#sidebar').toggleClass('show');
+                    var isOpen = $('#sidebar').hasClass('show');
+                    if (isOpen) {
+                        $('.sidebar-backdrop').addClass('show');
+                        $('body').css('overflow', 'hidden');
+                    } else {
+                        $('.sidebar-backdrop').removeClass('show');
+                        $('body').css('overflow', '');
+                    }
+                } else {
+                    $('#sidebar').toggleClass('collapsed');
+                }
             });
 
             // Close Mobile Sidebar on Backdrop click
             $(document).on('click touchstart', '.sidebar-backdrop', function(e) {
                 e.preventDefault();
-                $('#sidebar').addClass('collapsed');
-                syncMobileSidebarState();
+                $('#sidebar').removeClass('show');
+                $('.sidebar-backdrop').removeClass('show');
+                $('body').css('overflow', '');
             });
 
             // Close Mobile Sidebar when a navigation link is clicked (excluding dropdown toggles)
             $('.sidebar-nav a:not([data-toggle="collapse"]):not([data-bs-toggle="collapse"])').on('click', function() {
-                if ($(window).width() <= 991.98) {
-                    $('#sidebar').addClass('collapsed');
-                    syncMobileSidebarState();
+                if (isMobile()) {
+                    $('#sidebar').removeClass('show');
+                    $('.sidebar-backdrop').removeClass('show');
+                    $('body').css('overflow', '');
                 }
             });
 
             // Manual fallback click handler for sidebar collapse dropdown toggles
             $('.sidebar-nav a[data-toggle="collapse"], .sidebar-nav a[data-bs-toggle="collapse"]').on('click touchstart', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 var targetId = $(this).attr('data-bs-target') || $(this).attr('data-target');
                 if (targetId) {
                     var $target = $(targetId);
                     if ($target.length) {
-                        $target.toggleClass('show');
-                        $(this).toggleClass('collapsed');
-                        var isExpanded = $target.hasClass('show');
-                        $(this).attr('aria-expanded', isExpanded ? 'true' : 'false');
+                        var isOpen = $target.hasClass('show');
+                        if (isOpen) {
+                            $target.removeClass('show');
+                            $(this).addClass('collapsed').attr('aria-expanded', 'false');
+                        } else {
+                            $target.addClass('show');
+                            $(this).removeClass('collapsed').attr('aria-expanded', 'true');
+                        }
                     }
                 }
             });
 
-            // Window Resize listener to update sidebar mobile overlay
+            // Window Resize listener
             $(window).on('resize', function() {
-                syncMobileSidebarState();
+                if (!isMobile()) {
+                    $('#sidebar').removeClass('show');
+                    $('.sidebar-backdrop').removeClass('show');
+                    $('body').css('overflow', '');
+                }
             });
 
             // Mask Money Init
