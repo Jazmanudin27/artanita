@@ -21,25 +21,25 @@
                         <div class="col-3">
                             <div class="p-2" style="background: #dcfce7; border-radius: 10px;">
                                 <div class="font-weight-bold text-success" style="font-size: 1.1rem; line-height: 1;">{{ $s->total_hadir }}</div>
-                                <div class="text-success font-weight-bold" style="font-size: 0.68rem; margin-top: 2px;">Hadir</div>
+                                <div class="text-success font-weight-bold" style="font-size: 0.75rem; margin-top: 2px;">H</div>
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="p-2" style="background: #fef3c7; border-radius: 10px;">
                                 <div class="font-weight-bold text-warning" style="font-size: 1.1rem; line-height: 1; color: #d97706 !important;">{{ $s->total_sakit }}</div>
-                                <div class="font-weight-bold" style="font-size: 0.68rem; margin-top: 2px; color: #d97706 !important;">Sakit</div>
+                                <div class="font-weight-bold" style="font-size: 0.75rem; margin-top: 2px; color: #d97706 !important;">S</div>
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="p-2" style="background: #e0f2fe; border-radius: 10px;">
                                 <div class="font-weight-bold text-info" style="font-size: 1.1rem; line-height: 1; color: #0284c7 !important;">{{ $s->total_izin }}</div>
-                                <div class="font-weight-bold" style="font-size: 0.68rem; margin-top: 2px; color: #0284c7 !important;">Izin</div>
+                                <div class="font-weight-bold" style="font-size: 0.75rem; margin-top: 2px; color: #0284c7 !important;">I</div>
                             </div>
                         </div>
                         <div class="col-3">
                             <div class="p-2" style="background: #fee2e2; border-radius: 10px;">
                                 <div class="font-weight-bold text-danger" style="font-size: 1.1rem; line-height: 1;">{{ $s->total_alfa }}</div>
-                                <div class="text-danger font-weight-bold" style="font-size: 0.68rem; margin-top: 2px;">Alfa</div>
+                                <div class="text-danger font-weight-bold" style="font-size: 0.75rem; margin-top: 2px;">A</div>
                             </div>
                         </div>
                     </div>

@@ -84,8 +84,10 @@
         <!-- Student Rekap Container -->
         <div class="section mt-3 mb-5">
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <span class="font-weight-bold text-dark" style="font-size: 0.95rem;">Rekap Absensi Bulanan</span>
-                <span class="badge badge-primary px-2 py-1" style="border-radius: 8px;">Per Bulan</span>
+                <span class="font-weight-bold text-dark" style="font-size: 0.95rem;">Rekap Absensi Harian</span>
+                <div style="font-size: 0.72rem; color: #64748B;" class="font-weight-bold">
+                    <span class="text-success">H</span>=Hadir • <span style="color: #d97706;">S</span>=Sakit • <span style="color: #0284c7;">I</span>=Izin • <span class="text-danger">A</span>=Alfa
+                </div>
             </div>
             <div id="showRekapAbsensiSiswa">
                 <!-- Loaded via AJAX -->
