@@ -264,4 +264,30 @@ class AbsensiController extends Controller
 
         return view('absensi.showRekapAbsensiMapel', compact('siswa', 'bulan', 'tahun', 'kelas', 'mapel'));
     }
+
+    public function rekapPresensiGuru()
+    {
+        return view('absensi.rekapPresensiGuru');
+    }
+
+    public function showRekapPresensiGuru(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+
+        $guru = DB::table('guru')
+            ->select('guru.kode_guru', 'guru.nama_guru', 'guru.nip_nuptk')
+            ->selectRaw("SUM(CASE WHEN p.jam_in IS NOT NULL AND p.jam_in != '' THEN 1 ELSE 0 END) as total_hadir")
+            ->selectRaw("SUM(CASE WHEN sa.jenis_absen = 'Sakit' THEN 1 ELSE 0 END) as total_sakit")
+            ->selectRaw("SUM(CASE WHEN sa.jenis_absen = 'Izin' THEN 1 ELSE 0 END) as total_izin")
+            ->selectRaw("SUM(CASE WHEN sa.jenis_absen = 'Cuti' THEN 1 ELSE 0 END) as total_cuti")
+            ->leftJoin(DB::raw("(SELECT kode_guru, jam_in FROM presensi WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun') as p"), 'guru.kode_guru', '=', 'p.kode_guru')
+            ->leftJoin(DB::raw("(SELECT kode_guru, jenis_absen FROM surat_absen WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun') as sa"), 'guru.kode_guru', '=', 'sa.kode_guru')
+            ->where('guru.status', 'Aktif')
+            ->groupBy('guru.kode_guru', 'guru.nama_guru', 'guru.nip_nuptk')
+            ->orderBy('guru.nama_guru', 'ASC')
+            ->get();
+
+        return view('absensi.showRekapPresensiGuru', compact('guru', 'bulan', 'tahun'));
+    }
 }

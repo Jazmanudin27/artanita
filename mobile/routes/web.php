@@ -48,6 +48,8 @@ Route::controller(AbsensiController::class)->group(function () {
     Route::post('showRekapAbsensiSiswa', 'showRekapAbsensiSiswa')->name('showRekapAbsensiSiswa');
     Route::get('rekapAbsensiMapel', 'rekapAbsensiMapel')->name('rekapAbsensiMapel');
     Route::post('showRekapAbsensiMapel', 'showRekapAbsensiMapel')->name('showRekapAbsensiMapel');
+    Route::get('rekapPresensiGuru', 'rekapPresensiGuru')->name('rekapPresensiGuru');
+    Route::post('showRekapPresensiGuru', 'showRekapPresensiGuru')->name('showRekapPresensiGuru');
 });
 
 Route::controller(MapelController::class)->group(function () {

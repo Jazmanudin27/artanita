@@ -127,36 +127,49 @@
         <div class="section full mt-2">
             <div class="menu">
                 <a href="{{ route('viewSiswa') }}">
-                    <img src="{{ 'assets/img/icon/3.png' }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/3.png') }}" class="icon-menu">
                     <span>Siswa</span>
                 </a>
                 <a href="{{ route('viewGuru') }}">
-                    <img src="{{ 'assets/img/icon/2.png' }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/2.png') }}" class="icon-menu">
                     <span>Pengajar</span>
                 </a>
+                @if (Auth::guard('guru')->check() && Auth::guard('guru')->user()->kode_guru == 1)
+                @else
                 <a href="{{ route('viewMapel') }}">
-                    <img src="{{ 'assets/img/icon/5.png' }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/5.png') }}" class="icon-menu">
                     <span>Mapel</span>
                 </a>
+                @endif
                 <a href="{{ route('viewPresensi') }}">
-                    <img src="{{ 'assets/img/icon/7.png' }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/7.png') }}" class="icon-menu">
                     <span>History</span>
                 </a>
                 <a href="{{ route('viewAbsensiSiswa') }}">
-                    <img src="{{ 'assets/img/icon/8.png' }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/8.png') }}" class="icon-menu">
                     <span>Absen Siswa</span>
                 </a>
+                @if (Auth::guard('guru')->check() && Auth::guard('guru')->user()->kode_guru == 1)
+                @else
                 <a href="{{ route('viewAbsensiMapel') }}">
-                    <img src="{{ 'assets/img/icon/6.png' }}" class="icon-menu">
+                    <img src="{{ asset('assets/img/icon/6.png') }}" class="icon-menu">
                     <span>Absen Mapel</span>
                 </a>
+                @endif
                 <a href="{{ route('rekapAbsensiSiswa') }}">
                     <img src="{{ asset('assets/img/icon/7.png') }}" class="icon-menu">
                     <span>Rekap Siswa</span>
                 </a>
+                @if (Auth::guard('guru')->check() && Auth::guard('guru')->user()->kode_guru == 1)
+                @else
                 <a href="{{ route('rekapAbsensiMapel') }}">
                     <img src="{{ asset('assets/img/icon/5.png') }}" class="icon-menu">
                     <span>Rekap Mapel</span>
+                </a>
+                @endif
+                <a href="{{ route('rekapPresensiGuru') }}">
+                    <img src="{{ asset('assets/img/icon/2.png') }}" class="icon-menu">
+                    <span>Rekap Guru</span>
                 </a>
             </div>
         </div>
