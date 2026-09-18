@@ -2,43 +2,64 @@
 @section('titlepage', 'Dashboard')
 @section('contents')
     @php
+        $namaUser = 'User';
+        $kodeGuru = null;
+
+        if (Auth::guard('guru')->check()) {
+            $namaUser = Auth::guard('guru')->user()->nama_guru ?? 'Guru';
+            $kodeGuru = Auth::guard('guru')->user()->kode_guru ?? null;
+        } elseif (Auth::guard('kelas')->check()) {
+            $namaUser = 'Kelas ' . (Auth::guard('kelas')->user()->nama_kelas ?? '');
+        } elseif (Auth::guard('siswa')->check()) {
+            $namaUser = Auth::guard('siswa')->user()->nama_siswa ?? 'Siswa';
+        } elseif (Auth::check()) {
+            $namaUser = Auth::user()->name ?? 'Admin';
+        }
+
         $pengajar = DB::table('guru')->where('status', 'Aktif')->count();
         $alumni = DB::table('siswa')->where('status', 'Alumni')->count();
         $siswaLakiLaki = DB::table('siswa')->where('status', 'Aktif')->where('jk', 'Laki-Laki')->count();
         $siswaPerempuan = DB::table('siswa')->where('status', 'Aktif')->where('jk', 'Perempuan')->count();
-        $absensi = DB::table('presensi')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->orderBy('tanggal', 'DESC')
-            ->limit(5)
-            ->get();
-        $scanToDay = DB::table('presensi')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->where('tanggal', Date('Y-m-d'))
-            ->first();
-        $hadir = DB::table('presensi')
-            ->where('jam_in', '!=', '')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
-            ->count();
-        $izin = DB::table('surat_absen')
-            ->where('jenis_absen', 'Izin')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
-            ->count();
-        $sakit = DB::table('surat_absen')
-            ->where('jenis_absen', 'Sakit')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
-            ->count();
-        $cuti = DB::table('surat_absen')
-            ->where('jenis_absen', 'Cuti')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
-            ->count();
+
+        $absensi = collect();
+        $scanToDay = null;
+        $hadir = 0; $izin = 0; $sakit = 0; $cuti = 0;
+
+        if ($kodeGuru) {
+            $absensi = DB::table('presensi')
+                ->where('kode_guru', $kodeGuru)
+                ->orderBy('tanggal', 'DESC')
+                ->limit(5)
+                ->get();
+            $scanToDay = DB::table('presensi')
+                ->where('kode_guru', $kodeGuru)
+                ->where('tanggal', Date('Y-m-d'))
+                ->first();
+            $hadir = DB::table('presensi')
+                ->where('jam_in', '!=', '')
+                ->where('kode_guru', $kodeGuru)
+                ->whereMonth('tanggal', Date('m'))
+                ->whereYear('tanggal', Date('Y'))
+                ->count();
+            $izin = DB::table('surat_absen')
+                ->where('jenis_absen', 'Izin')
+                ->where('kode_guru', $kodeGuru)
+                ->whereMonth('tanggal', Date('m'))
+                ->whereYear('tanggal', Date('Y'))
+                ->count();
+            $sakit = DB::table('surat_absen')
+                ->where('jenis_absen', 'Sakit')
+                ->where('kode_guru', $kodeGuru)
+                ->whereMonth('tanggal', Date('m'))
+                ->whereYear('tanggal', Date('Y'))
+                ->count();
+            $cuti = DB::table('surat_absen')
+                ->where('jenis_absen', 'Cuti')
+                ->where('kode_guru', $kodeGuru)
+                ->whereMonth('tanggal', Date('m'))
+                ->whereYear('tanggal', Date('Y'))
+                ->count();
+        }
     @endphp
     <div id="appCapsule">
         <div class="">
@@ -48,7 +69,7 @@
                         <img src="{{ asset('assets/img/icon/pria.png') }}" alt="Avatar" class="avatar">
                         <div>
                             <span class="title">Selamat datang,</span>
-                            <h1 class="total">{{ Auth::guard('guru')->user()->nama_guru }}</h1>
+                            <h1 class="total">{{ $namaUser }}</h1>
                         </div>
                     </div>
                     <div class="right">

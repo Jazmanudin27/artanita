@@ -15,7 +15,9 @@ class HomeController extends Controller
             return view('home.dashboardSiswa');
         } else if (Auth::guard('guru')->check()) {
             return view('home.dashboardGuru');
-        } else if (Auth::guard('web')->check()) {
+        } else if (Auth::guard('kelas')->check()) {
+            return view('home.dashboardAdmin');
+        } else if (Auth::guard('web')->check() || Auth::check()) {
             return view('home.dashboardAdmin');
         }  else {
             return view('auth.login');
