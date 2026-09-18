@@ -51,6 +51,14 @@
                                 <input type="email" name="email" class="form-control" placeholder="Email" required>
                             </div>
                             <div class="mb-3">
+                                <label class="form-label">Username (untuk Login)</label>
+                                <input type="text" name="username" class="form-control" placeholder="Username untuk login" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Password untuk login" required>
+                            </div>
+                            <div class="mb-3">
                                 <label class="form-label">Alamat</label>
                                 <input type="text" name="alamat" class="form-control" placeholder="Alamat" required>
                             </div>

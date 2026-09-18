@@ -83,6 +83,18 @@
                         </div>
                         <div class="form-group basic">
                             <div class="input-wrapper">
+                                <label class="label">Username (untuk Login)</label>
+                                <input type="text" name="username" class="form-control" placeholder="Username untuk login" required>
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label">Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Password untuk login" required>
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
                                 <label class="label">Agama</label>
                                 <select class="form-control select2" name="agama" required>
                                     <option value="">Pilih Agama</option>

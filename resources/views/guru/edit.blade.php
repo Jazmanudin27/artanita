@@ -52,6 +52,16 @@
                                     placeholder="Email" required>
                             </div>
                             <div class="mb-3">
+                                <label class="form-label">Username (untuk Login)</label>
+                                <input type="text" value="{{ $guru->username }}" name="username" class="form-control"
+                                    placeholder="Username untuk login">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password Baru (Opsional)</label>
+                                <input type="password" name="password" class="form-control"
+                                    placeholder="Kosongkan jika tidak ingin mengubah password">
+                            </div>
+                            <div class="mb-3">
                                 <label class="form-label">Jenis Kelamin</label>
                                 <select class="form-control select2" name="jk">
                                     <option value="">Pilih Jenis Kelamin</option>

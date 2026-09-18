@@ -90,6 +90,20 @@
                         </div>
                         <div class="form-group basic">
                             <div class="input-wrapper">
+                                <label class="label">Username (untuk Login)</label>
+                                <input type="text" value="{{ $guru->username ?? '' }}" name="username" class="form-control"
+                                    placeholder="Username untuk login">
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
+                                <label class="label">Password Baru (Opsional)</label>
+                                <input type="password" name="password" class="form-control"
+                                    placeholder="Kosongkan jika tidak ingin mengubah password">
+                            </div>
+                        </div>
+                        <div class="form-group basic">
+                            <div class="input-wrapper">
                                 <label class="label">Agama</label>
                                 <select class="form-control select2" name="agama" id="agama" required>
                                     <option value="">Pilih Agama</option>

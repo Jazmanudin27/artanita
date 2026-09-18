@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class GuruController extends Controller
 {
@@ -24,10 +25,17 @@ class GuruController extends Controller
 
     public function store(Request $request)
     {
+        $username = $request->username ?: ($request->email ?: $request->nip_nuptk);
+        $password = $request->password ?: '123456';
+        $hashedPassword = bcrypt($password);
+        $kodeMember = Auth::check() ? Auth::user()->kode_member : null;
+
         $simpan = DB::table('guru')
             ->insert([
                 'no_urut' => $request->no_urut,
                 'nama_guru' => $request->nama_guru,
+                'username' => $username,
+                'password' => $hashedPassword,
                 'alamat' => $request->alamat,
                 'no_hp' => $request->no_hp,
                 'nip_nuptk' => $request->nip_nuptk,
@@ -40,12 +48,29 @@ class GuruController extends Controller
                 'tgl_lahir' => $request->tgl_lahir,
                 'jk' => $request->jk,
                 'status' => 'Aktif',
-                'kode_member' => Auth::user()->kode_member,
+                'kode_member' => $kodeMember,
             ]);
+
+        // Also insert into users table if present
+        if ($simpan && Schema::hasTable('users')) {
+            try {
+                DB::table('users')->updateOrInsert(
+                    ['email' => $request->email],
+                    [
+                        'name' => $request->nama_guru,
+                        'username' => $username,
+                        'password' => $hashedPassword,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            } catch (\Throwable $e) {}
+        }
+
         if ($simpan) {
-            return Redirect('viewGuru')->with(['success' => 'Data Berhasil Disimpan']);
+            return Redirect('viewGuru')->with(['success' => 'Data Guru Berhasil Disimpan']);
         } else {
-            return Redirect('viewGuru')->with(['warning' => 'Data Gagal Disimpan']);
+            return Redirect('viewGuru')->with(['warning' => 'Data Guru Gagal Disimpan']);
         }
     }
 
@@ -88,25 +113,48 @@ class GuruController extends Controller
 
     public function update(Request $request)
     {
+        $dataUpdate = [
+            'no_urut' => $request->no_urut,
+            'nama_guru' => $request->nama_guru,
+            'username' => $request->username,
+            'alamat' => $request->alamat,
+            'no_hp' => $request->no_hp,
+            'nip_nuptk' => $request->nip_nuptk,
+            'status_kepegawaian' => $request->status_kepegawaian,
+            'pendidikan_terakhir' => $request->pendidikan_terakhir,
+            'tmt' => $request->tmt,
+            'agama' => $request->agama,
+            'email' => $request->email,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tgl_lahir' => $request->tgl_lahir,
+            'jk' => $request->jk,
+            'status' => $request->status,
+        ];
+
+        if (!empty($request->password)) {
+            $dataUpdate['password'] = bcrypt($request->password);
+        }
+
         $update = DB::table('guru')
             ->where('kode_guru', $request->kode_guru)
-            ->update([
-                'no_urut' => $request->no_urut,
-                'nama_guru' => $request->nama_guru,
-                'alamat' => $request->alamat,
-                'no_hp' => $request->no_hp,
-                'nip_nuptk' => $request->nip_nuptk,
-                'status_kepegawaian' => $request->status_kepegawaian,
-                'pendidikan_terakhir' => $request->pendidikan_terakhir,
-                'tmt' => $request->tmt,
-                'agama' => $request->agama,
-                'email' => $request->email,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tgl_lahir' => $request->tgl_lahir,
-                'jk' => $request->jk,
-                'status' => $request->status,
-            ]);
-        if ($update) {
+            ->update($dataUpdate);
+
+        // Sync to users table if exists
+        if (Schema::hasTable('users')) {
+            try {
+                $userData = [
+                    'name' => $request->nama_guru,
+                    'username' => $request->username,
+                    'updated_at' => now(),
+                ];
+                if (!empty($request->password)) {
+                    $userData['password'] = bcrypt($request->password);
+                }
+                DB::table('users')->where('email', $request->email)->update($userData);
+            } catch (\Throwable $e) {}
+        }
+
+        if ($update !== false) {
             return Redirect('viewGuru')->with(['success' => 'Data Berhasil Diupdate']);
         } else {
             return Redirect('viewGuru')->with(['warning' => 'Data Gagal Diupdate']);
