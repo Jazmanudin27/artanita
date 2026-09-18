@@ -27,8 +27,13 @@ class HomeController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        $user = Auth::guard('web')->user() ?: Auth::user();
+        $kode_member = $user ? ($user->kode_member ?? null) : null;
+
         $kelas = DB::table('kelas')
-        ->where('kode_member',Auth::guard('web')->user()->kode_member)
+        ->when($kode_member, function($q) use ($kode_member) {
+            $q->where('kode_member', $kode_member);
+        })
         ->orderBy('kelas.nama_kelas', 'ASC')
         ->get();
         return view('home.loadAbsensiSiswaPerKelas', compact('kelas','bulan','tahun'));
@@ -78,11 +83,14 @@ class HomeController extends Controller
 
     public function loadJadwal(Request $request)
     {
-        $kode_member    = Auth::user()->kode_member;
+        $user = Auth::guard('web')->user() ?: Auth::user();
+        $kode_member    = $user ? ($user->kode_member ?? null) : null;
         $hari           = $request->hari;
 
         $member = DB::table('member')
-        ->where('member.kode_member',$kode_member)
+        ->when($kode_member, function($q) use ($kode_member) {
+            $q->where('member.kode_member', $kode_member);
+        })
         ->first();
 
         $jamKe = DB::table('jadwal_jam')
@@ -91,16 +99,22 @@ class HomeController extends Controller
 
         $kelas = DB::table('kelas')
             ->orderBy('nama_kelas','ASC')
-            ->where('kode_member', $kode_member)
+            ->when($kode_member, function($q) use ($kode_member) {
+                $q->where('kode_member', $kode_member);
+            })
             ->get();
 
         $jmlKelas = DB::table('kelas')
             ->orderBy('nama_kelas','ASC')
-            ->where('kode_member', $kode_member)
+            ->when($kode_member, function($q) use ($kode_member) {
+                $q->where('kode_member', $kode_member);
+            })
             ->count();
 
         $guru = DB::table('guru')
-            ->where('kode_member', $kode_member)
+            ->when($kode_member, function($q) use ($kode_member) {
+                $q->where('kode_member', $kode_member);
+            })
             ->orderBy('nama_guru','ASC')
             ->get();
 

@@ -11,7 +11,7 @@ class Admin
 {
     public function handle($request, Closure $next)
     {
-        if (!(Auth::check() || Auth::guard('guru')->check() || Auth::guard('siswa')->check() )) {
+        if (Auth::check() || Auth::guard('web')->check() || Auth::guard('guru')->check() || Auth::guard('kelas')->check() || Auth::guard('siswa')->check()) {
             return $next($request);
         }
         return redirect('/');
