@@ -2,43 +2,41 @@
 @section('titlepage', 'Dashboard')
 @section('contents')
     @php
-        $pengajar = DB::table('guru')->where('status', 'Aktif')->count();
-        $alumni = DB::table('siswa')->where('status', 'Alumni')->count();
-        $siswaLakiLaki = DB::table('siswa')->where('status', 'Aktif')->where('jk', 'Laki-Laki')->count();
-        $siswaPerempuan = DB::table('siswa')->where('status', 'Aktif')->where('jk', 'Perempuan')->count();
+        $kodeGuru = Auth::guard('guru')->user()->kode_guru;
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+        $startDate = "$currentYear-$currentMonth-01";
+        $endDate = date('Y-m-t', strtotime($startDate));
+        $today = date('Y-m-d');
+
         $absensi = DB::table('presensi')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
+            ->where('kode_guru', $kodeGuru)
             ->orderBy('tanggal', 'DESC')
             ->limit(5)
             ->get();
+
         $scanToDay = DB::table('presensi')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->where('tanggal', Date('Y-m-d'))
+            ->where('kode_guru', $kodeGuru)
+            ->where('tanggal', $today)
             ->first();
+
         $hadir = DB::table('presensi')
+            ->where('kode_guru', $kodeGuru)
+            ->whereBetween('tanggal', [$startDate, $endDate])
+            ->whereNotNull('jam_in')
             ->where('jam_in', '!=', '')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
             ->count();
-        $izin = DB::table('surat_absen')
-            ->where('jenis_absen', 'Izin')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
-            ->count();
-        $sakit = DB::table('surat_absen')
-            ->where('jenis_absen', 'Sakit')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
-            ->count();
-        $cuti = DB::table('surat_absen')
-            ->where('jenis_absen', 'Cuti')
-            ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
-            ->whereMonth('tanggal', Date('m'))
-            ->whereYear('tanggal', Date('Y'))
-            ->count();
+
+        $suratStats = DB::table('surat_absen')
+            ->select('jenis_absen', DB::raw('COUNT(*) as total'))
+            ->where('kode_guru', $kodeGuru)
+            ->whereBetween('tanggal', [$startDate, $endDate])
+            ->groupBy('jenis_absen')
+            ->pluck('total', 'jenis_absen');
+
+        $izin = $suratStats['Izin'] ?? 0;
+        $sakit = $suratStats['Sakit'] ?? 0;
+        $cuti = $suratStats['Cuti'] ?? 0;
     @endphp
     <div id="appCapsule">
         <div class="">

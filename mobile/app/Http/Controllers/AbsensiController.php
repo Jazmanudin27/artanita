@@ -198,8 +198,10 @@ class AbsensiController extends Controller
 
     public function showRekapAbsensiSiswa(Request $request)
     {
-        $bulan = $request->bulan;
+        $bulan = str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
         $tahun = $request->tahun;
+        $startDate = "$tahun-$bulan-01";
+        $endDate = date('Y-m-t', strtotime($startDate));
         $kode_kelas = $request->kode_kelas;
 
         if (Auth::guard('kelas')->check()) {
@@ -216,7 +218,7 @@ class AbsensiController extends Controller
             ->selectRaw("SUM(CASE WHEN abs.status = 'S' THEN 1 ELSE 0 END) as total_sakit")
             ->selectRaw("SUM(CASE WHEN abs.status = 'I' THEN 1 ELSE 0 END) as total_izin")
             ->selectRaw("SUM(CASE WHEN abs.status = 'A' THEN 1 ELSE 0 END) as total_alfa")
-            ->leftJoin(DB::raw("(SELECT kode_siswa, status FROM absensi_siswa WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun') as abs"), 'siswa.kode_siswa', '=', 'abs.kode_siswa')
+            ->leftJoin(DB::raw("(SELECT kode_siswa, status FROM absensi_siswa WHERE tanggal >= '$startDate' AND tanggal <= '$endDate') as abs"), 'siswa.kode_siswa', '=', 'abs.kode_siswa')
             ->join('kelas', 'kelas.kode_kelas', 'siswa.kode_kelas')
             ->where('siswa.kode_kelas', $kode_kelas)
             ->where('siswa.status', 'Aktif')
@@ -234,8 +236,10 @@ class AbsensiController extends Controller
 
     public function showRekapAbsensiMapel(Request $request)
     {
-        $bulan = $request->bulan;
+        $bulan = str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
         $tahun = $request->tahun;
+        $startDate = "$tahun-$bulan-01";
+        $endDate = date('Y-m-t', strtotime($startDate));
         $kode_kelas = $request->kode_kelas;
         $kode_mapel = $request->kode_mapel;
 
@@ -254,7 +258,7 @@ class AbsensiController extends Controller
             ->selectRaw("SUM(CASE WHEN abs.status = 'S' THEN 1 ELSE 0 END) as total_sakit")
             ->selectRaw("SUM(CASE WHEN abs.status = 'I' THEN 1 ELSE 0 END) as total_izin")
             ->selectRaw("SUM(CASE WHEN abs.status = 'A' THEN 1 ELSE 0 END) as total_alfa")
-            ->leftJoin(DB::raw("(SELECT kode_siswa, status FROM absensi_mapel WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' AND kode_mapel = '$kode_mapel') as abs"), 'siswa.kode_siswa', '=', 'abs.kode_siswa')
+            ->leftJoin(DB::raw("(SELECT kode_siswa, status FROM absensi_mapel WHERE tanggal >= '$startDate' AND tanggal <= '$endDate' AND kode_mapel = '$kode_mapel') as abs"), 'siswa.kode_siswa', '=', 'abs.kode_siswa')
             ->join('kelas', 'kelas.kode_kelas', 'siswa.kode_kelas')
             ->where('siswa.kode_kelas', $kode_kelas)
             ->where('siswa.status', 'Aktif')
@@ -272,8 +276,10 @@ class AbsensiController extends Controller
 
     public function showRekapPresensiGuru(Request $request)
     {
-        $bulan = $request->bulan;
+        $bulan = str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
         $tahun = $request->tahun;
+        $startDate = "$tahun-$bulan-01";
+        $endDate = date('Y-m-t', strtotime($startDate));
 
         $guru = DB::table('guru')
             ->select('guru.kode_guru', 'guru.nama_guru', 'guru.nip_nuptk')
@@ -281,8 +287,8 @@ class AbsensiController extends Controller
             ->selectRaw("SUM(CASE WHEN sa.jenis_absen = 'Sakit' THEN 1 ELSE 0 END) as total_sakit")
             ->selectRaw("SUM(CASE WHEN sa.jenis_absen = 'Izin' THEN 1 ELSE 0 END) as total_izin")
             ->selectRaw("SUM(CASE WHEN sa.jenis_absen = 'Cuti' THEN 1 ELSE 0 END) as total_cuti")
-            ->leftJoin(DB::raw("(SELECT kode_guru, jam_in FROM presensi WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun') as p"), 'guru.kode_guru', '=', 'p.kode_guru')
-            ->leftJoin(DB::raw("(SELECT kode_guru, jenis_absen FROM surat_absen WHERE MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun') as sa"), 'guru.kode_guru', '=', 'sa.kode_guru')
+            ->leftJoin(DB::raw("(SELECT kode_guru, jam_in FROM presensi WHERE tanggal >= '$startDate' AND tanggal <= '$endDate') as p"), 'guru.kode_guru', '=', 'p.kode_guru')
+            ->leftJoin(DB::raw("(SELECT kode_guru, jenis_absen FROM surat_absen WHERE tanggal >= '$startDate' AND tanggal <= '$endDate') as sa"), 'guru.kode_guru', '=', 'sa.kode_guru')
             ->where('guru.status', 'Aktif')
             ->groupBy('guru.kode_guru', 'guru.nama_guru', 'guru.nip_nuptk')
             ->orderBy('guru.nama_guru', 'ASC')

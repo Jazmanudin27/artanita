@@ -7,10 +7,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
 use Jenssegers\Agent\Agent;
 
 class LoginController extends Controller
 {
+    private function hasCol($table, $column) {
+        return Cache::remember("col_{$table}_{$column}", 86400, function() use ($table, $column) {
+            return Schema::hasTable($table) && Schema::hasColumn($table, $column);
+        });
+    }
+
+    private function hasTbl($table) {
+        return Cache::remember("tbl_{$table}", 86400, function() use ($table) {
+            return Schema::hasTable($table);
+        });
+    }
 
     public function index()
     {
@@ -42,12 +54,12 @@ class LoginController extends Controller
 
         // 1. Try Web Guard (users table)
         try {
-            if (Schema::hasTable('users')) {
+            if ($this->hasTbl('users')) {
                 if (Auth::guard('web')->attempt(['email' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
-                if (Schema::hasColumn('users', 'username') && Auth::guard('web')->attempt(['username' => $loginInput, 'password' => $password])) {
+                if ($this->hasCol('users', 'username') && Auth::guard('web')->attempt(['username' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
@@ -56,16 +68,16 @@ class LoginController extends Controller
 
         // 2. Try Guru Guard (guru table)
         try {
-            if (Schema::hasTable('guru')) {
-                if (Schema::hasColumn('guru', 'email') && Auth::guard('guru')->attempt(['email' => $loginInput, 'password' => $password])) {
+            if ($this->hasTbl('guru')) {
+                if ($this->hasCol('guru', 'email') && Auth::guard('guru')->attempt(['email' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
-                if (Schema::hasColumn('guru', 'username') && Auth::guard('guru')->attempt(['username' => $loginInput, 'password' => $password])) {
+                if ($this->hasCol('guru', 'username') && Auth::guard('guru')->attempt(['username' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
-                if (Schema::hasColumn('guru', 'nip_nuptk') && Auth::guard('guru')->attempt(['nip_nuptk' => $loginInput, 'password' => $password])) {
+                if ($this->hasCol('guru', 'nip_nuptk') && Auth::guard('guru')->attempt(['nip_nuptk' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
@@ -74,16 +86,16 @@ class LoginController extends Controller
 
         // 3. Try Siswa Guard (siswa table)
         try {
-            if (Schema::hasTable('siswa')) {
-                if (Schema::hasColumn('siswa', 'nisn') && Auth::guard('siswa')->attempt(['nisn' => $loginInput, 'password' => $password])) {
+            if ($this->hasTbl('siswa')) {
+                if ($this->hasCol('siswa', 'nisn') && Auth::guard('siswa')->attempt(['nisn' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
-                if (Schema::hasColumn('siswa', 'username') && Auth::guard('siswa')->attempt(['username' => $loginInput, 'password' => $password])) {
+                if ($this->hasCol('siswa', 'username') && Auth::guard('siswa')->attempt(['username' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
-                if (Schema::hasColumn('siswa', 'email') && Auth::guard('siswa')->attempt(['email' => $loginInput, 'password' => $password])) {
+                if ($this->hasCol('siswa', 'email') && Auth::guard('siswa')->attempt(['email' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
@@ -92,8 +104,8 @@ class LoginController extends Controller
 
         // 4. Try Kelas Guard (kelas table)
         try {
-            if (Schema::hasTable('kelas')) {
-                if (Schema::hasColumn('kelas', 'username') && Auth::guard('kelas')->attempt(['username' => $loginInput, 'password' => $password])) {
+            if ($this->hasTbl('kelas')) {
+                if ($this->hasCol('kelas', 'username') && Auth::guard('kelas')->attempt(['username' => $loginInput, 'password' => $password])) {
                     $request->session()->regenerate();
                     return redirect()->intended('/dashboard');
                 }
@@ -103,9 +115,9 @@ class LoginController extends Controller
         // 5. Fallback for legacy plain text / MD5 / SHA1 passwords across tables
         try {
             // Check users table
-            if (Schema::hasTable('users')) {
+            if ($this->hasTbl('users')) {
                 $userQuery = DB::table('users')->where('email', $loginInput);
-                if (Schema::hasColumn('users', 'username')) {
+                if ($this->hasCol('users', 'username')) {
                     $userQuery->orWhere('username', $loginInput);
                 }
                 $webUser = $userQuery->first();
