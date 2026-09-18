@@ -75,6 +75,12 @@ class AbsensiController extends Controller
         $tanggal = $request->tanggal;
         $kode_kelas = $request->kode_kelas;
 
+        if (Auth::guard('kelas')->check()) {
+            $kode_kelas = Auth::guard('kelas')->user()->kode_kelas;
+        } else if (Auth::guard('siswa')->check()) {
+            $kode_kelas = Auth::guard('siswa')->user()->kode_kelas;
+        }
+
         $siswa = DB::table('siswa')
         ->select('siswa.kode_siswa','siswa.kode_kelas', 'siswa.nama_siswa','kelas.nama_kelas', 'abs.tanggal', 'abs.status')
         ->leftJoin(DB::raw("(SELECT kode_siswa, status, tanggal FROM absensi_siswa WHERE tanggal = '$tanggal') as abs"), function ($join) {
@@ -96,6 +102,10 @@ class AbsensiController extends Controller
         $kodeKelas = $request->input('kode_kelas');
         $status = $request->input('status');
 
+        if (Auth::guard('kelas')->check()) {
+            $kodeKelas = Auth::guard('kelas')->user()->kode_kelas;
+        }
+
         DB::transaction(function () use ($kodeSiswa, $kodeKelas, $status, $tanggal) {
             DB::table('absensi_siswa')
                 ->where('kode_siswa', $kodeSiswa)
@@ -111,6 +121,7 @@ class AbsensiController extends Controller
             ]);
         });
     }
+
     public function viewAbsensiMapel()
     {
         return view('absensi.viewAbsensiMapel');
@@ -122,6 +133,12 @@ class AbsensiController extends Controller
         $tanggal = $request->tanggal;
         $kode_kelas = $request->kode_kelas;
         $kode_mapel = $request->kode_mapel;
+
+        if (Auth::guard('kelas')->check()) {
+            $kode_kelas = Auth::guard('kelas')->user()->kode_kelas;
+        } else if (Auth::guard('siswa')->check()) {
+            $kode_kelas = Auth::guard('siswa')->user()->kode_kelas;
+        }
 
         $siswa = DB::table('siswa')
         ->select('siswa.kode_siswa','siswa.kode_kelas', 'siswa.nama_siswa','kelas.nama_kelas', 'abs.tanggal', 'abs.status')
@@ -145,12 +162,17 @@ class AbsensiController extends Controller
         $kodeMapel = $request->input('kode_mapel');
         $status = $request->input('status');
 
-        DB::transaction(function () use ($kodeSiswa, $kodeMapel, $kodeKelas, $status, $tanggal) {
+        if (Auth::guard('kelas')->check()) {
+            $kodeKelas = Auth::guard('kelas')->user()->kode_kelas;
+        }
+
+        $kodeGuru = Auth::guard('guru')->check() ? Auth::guard('guru')->user()->kode_guru : null;
+
+        DB::transaction(function () use ($kodeSiswa, $kodeMapel, $kodeKelas, $status, $tanggal, $kodeGuru) {
             DB::table('absensi_mapel')
                 ->where('kode_siswa', $kodeSiswa)
                 ->where('kode_mapel', $kodeMapel)
                 ->where('kode_kelas', $kodeKelas)
-                ->where('kode_guru', Auth::guard('guru')->user()->kode_guru)
                 ->where('tanggal', $tanggal)
                 ->delete();
 
@@ -159,7 +181,7 @@ class AbsensiController extends Controller
                 'kode_kelas' => $kodeKelas,
                 'kode_siswa' => $kodeSiswa,
                 'kode_mapel' => $kodeMapel,
-                'kode_guru' => Auth::guard('guru')->user()->kode_guru,
+                'kode_guru' => $kodeGuru,
                 'status' => $status,
             ]);
         });
@@ -175,6 +197,12 @@ class AbsensiController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $kode_kelas = $request->kode_kelas;
+
+        if (Auth::guard('kelas')->check()) {
+            $kode_kelas = Auth::guard('kelas')->user()->kode_kelas;
+        } else if (Auth::guard('siswa')->check()) {
+            $kode_kelas = Auth::guard('siswa')->user()->kode_kelas;
+        }
 
         $kelas = DB::table('kelas')->where('kode_kelas', $kode_kelas)->first();
 
@@ -206,6 +234,12 @@ class AbsensiController extends Controller
         $tahun = $request->tahun;
         $kode_kelas = $request->kode_kelas;
         $kode_mapel = $request->kode_mapel;
+
+        if (Auth::guard('kelas')->check()) {
+            $kode_kelas = Auth::guard('kelas')->user()->kode_kelas;
+        } else if (Auth::guard('siswa')->check()) {
+            $kode_kelas = Auth::guard('siswa')->user()->kode_kelas;
+        }
 
         $kelas = DB::table('kelas')->where('kode_kelas', $kode_kelas)->first();
         $mapel = DB::table('mapel')->where('kode_mapel', $kode_mapel)->first();

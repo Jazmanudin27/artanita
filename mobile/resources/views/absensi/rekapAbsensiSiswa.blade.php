@@ -61,19 +61,18 @@
                             </label>
                             <select class="form-control custom-select" id="kode_kelas" style="border-radius: 10px; border: 1px solid #cbd5e1; padding: 10px 12px; font-weight: 500;">
                                 @php
-                                    $selectedKelas = null;
-                                    if (Auth::guard('siswa')->check()) {
-                                        $selectedKelas = Auth::guard('siswa')->user()->kode_kelas;
-                                        $kelas = DB::select("SELECT * FROM kelas WHERE kode_kelas = '$selectedKelas' ORDER BY nama_kelas ASC");
-                                    } elseif (Auth::guard('kelas')->check()) {
-                                        $selectedKelas = Auth::guard('kelas')->user()->kode_kelas;
-                                        $kelas = DB::select("SELECT * FROM kelas WHERE kode_kelas = '$selectedKelas' ORDER BY nama_kelas ASC");
+                                    if (Auth::guard('kelas')->check()) {
+                                        $kode_kelas = Auth::guard('kelas')->user()->kode_kelas;
+                                        $kelas = DB::select("SELECT * FROM kelas WHERE kode_kelas = '$kode_kelas' ORDER BY nama_kelas ASC");
+                                    } else if (Auth::guard('siswa')->check()) {
+                                        $kode_kelas = Auth::guard('siswa')->user()->kode_kelas;
+                                        $kelas = DB::select("SELECT * FROM kelas WHERE kode_kelas = '$kode_kelas' ORDER BY nama_kelas ASC");
                                     } else {
                                         $kelas = DB::select('SELECT * FROM kelas ORDER BY nama_kelas ASC');
                                     }
                                 @endphp
                                 @foreach ($kelas as $p)
-                                    <option value="{{ $p->kode_kelas }}" {{ ($selectedKelas == $p->kode_kelas) ? 'selected' : '' }}>{{ $p->nama_kelas }}</option>
+                                    <option value="{{ $p->kode_kelas }}">{{ $p->nama_kelas }}</option>
                                 @endforeach
                             </select>
                         </div>

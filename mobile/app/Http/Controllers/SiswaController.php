@@ -70,6 +70,10 @@ class SiswaController extends Controller
         $status = $request->status;
         $nama_siswa = $request->nama_siswa;
 
+        if (Auth::guard('kelas')->check()) {
+            $kode_kelas = Auth::guard('kelas')->user()->kode_kelas;
+        }
+
         $siswa = DB::table('siswa')
         ->join('kelas','kelas.kode_kelas','siswa.kode_kelas')
         ->when($kode_kelas, function ($query) use ($kode_kelas) {

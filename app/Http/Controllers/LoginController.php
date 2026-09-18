@@ -71,7 +71,7 @@ class LoginController extends Controller
         try {
             if (Auth::guard('kelas')->attempt(['username' => $loginInput, 'password' => $password])) {
                 $request->session()->regenerate();
-                return redirect()->route('viewAbsensiSiswa');
+                return redirect()->intended('dashboard');
             }
         } catch (\Throwable $e) {}
 
@@ -98,7 +98,7 @@ class LoginController extends Controller
                 DB::table('kelas')->where('kode_kelas', $kelas->kode_kelas)->update(['password' => bcrypt($password)]);
                 Auth::guard('kelas')->loginUsingId($kelas->kode_kelas);
                 $request->session()->regenerate();
-                return redirect()->route('viewAbsensiSiswa');
+                return redirect()->intended('dashboard');
             }
         } catch (\Throwable $e) {}
 
