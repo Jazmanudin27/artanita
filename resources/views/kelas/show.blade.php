@@ -8,6 +8,7 @@
         <td>{{ $s->nama_kelas }}</td>
         <td>{{ $s->jurusan }}</td>
         <td>{{ $s->nama_guru }}</td>
+        <td><code>{{ $s->username ?? '-' }}</code></td>
         <td>
             <a data-href="{{ route('deleteKelas', $s->kode_kelas) }}" class="btn btn-sm btn-danger delete"><i
                     class="fa fa-trash"></i></a>

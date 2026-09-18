@@ -36,6 +36,14 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username Absensi</label>
+                                <input type="text" value="{{ $kelas->username ?? '' }}" name="username" class="form-control" placeholder="Username untuk Absensi Kelas">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password Absensi (Kosongkan jika tidak diubah)</label>
+                                <input type="password" name="password" class="form-control" placeholder="Password Baru">
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>

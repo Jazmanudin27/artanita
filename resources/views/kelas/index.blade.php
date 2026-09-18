@@ -26,9 +26,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Guru</th>
+                                        <th>Nama Kelas</th>
                                         <th>Jurusan</th>
                                         <th>Wali Kelas</th>
+                                        <th>Username Absensi</th>
                                         <th style="width: 100px">Aksi</th>
                                     </tr>
                                 </thead>

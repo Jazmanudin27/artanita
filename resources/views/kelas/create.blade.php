@@ -31,6 +31,14 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username Absensi</label>
+                                <input type="text" name="username" class="form-control" placeholder="Username untuk Absensi Kelas">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password Absensi</label>
+                                <input type="password" name="password" class="form-control" placeholder="Password untuk Absensi Kelas">
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>

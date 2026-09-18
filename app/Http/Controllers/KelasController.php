@@ -25,13 +25,16 @@ class KelasController extends Controller
 
     public function store(Request $request)
     {
-        $simpan = DB::table('kelas')
-            ->insert([
-                'nama_kelas' => $request->nama_kelas,
-                'jurusan' => $request->jurusan,
-                'kode_guru' => $request->kode_guru,
-                'kode_member' => Auth::user()->kode_member,
-            ]);
+        $data = [
+            'nama_kelas' => $request->nama_kelas,
+            'jurusan' => $request->jurusan,
+            'kode_guru' => $request->kode_guru,
+            'kode_member' => Auth::user()->kode_member,
+            'username' => $request->username,
+            'password' => $request->password ? bcrypt($request->password) : null,
+        ];
+
+        $simpan = DB::table('kelas')->insert($data);
         if ($simpan) {
             return Redirect('viewKelas')->with(['success' => 'Data Berhasil Disimpan']);
         } else {
@@ -60,7 +63,8 @@ class KelasController extends Controller
         $nama_kelas = $request->nama_kelas;
 
         $kelas = DB::table('kelas')
-        ->join('guru','kelas.kode_guru','guru.kode_guru')
+        ->leftJoin('guru','kelas.kode_guru','guru.kode_guru')
+        ->select('kelas.*', 'guru.nama_guru')
         ->when($nama_kelas, function ($query) use ($nama_kelas) {
             return $query->where('kelas.nama_kelas', 'LIKE', '%' . $nama_kelas . '%');
         })
@@ -71,13 +75,20 @@ class KelasController extends Controller
 
     public function update(Request $request)
     {
+        $data = [
+            'nama_kelas' => $request->nama_kelas,
+            'jurusan' => $request->jurusan,
+            'kode_guru' => $request->kode_guru,
+            'username' => $request->username,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
         $update = DB::table('kelas')
             ->where('kode_kelas', $request->kode_kelas)
-            ->update([
-                'nama_kelas' => $request->nama_kelas,
-                'jurusan' => $request->jurusan,
-                'kode_guru' => $request->kode_guru,
-            ]);
+            ->update($data);
         if ($update) {
             return Redirect('viewKelas')->with(['success' => 'Data Berhasil Diupdate']);
         } else {
