@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ asset('dist/images/logo.png') }}" rel="shortcut icon">
+    <link href="{{ asset('assets/img/logo.png') }}" rel="shortcut icon">
     <title>Login - SIARTAS Artanita</title>
     
     <!-- Google Fonts -->
@@ -167,7 +167,7 @@
     <div class="login-glass-card">
         <div class="brand-logo-container">
             <div class="brand-logo-badge">
-                <img src="{{ asset('dist/images/logo.png') }}" alt="SIARTAS Logo">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="SIARTAS Logo">
             </div>
             <h1 class="login-title">SIARTAS</h1>
             <p class="login-subtitle">Sistem Informasi SMK Artanita</p>
