@@ -165,7 +165,7 @@
                     <strong>Home</strong>
                 </div>
             </a>
-            <a href="{{ route('scan') }}">
+            <a href="{{ route('scan') }}" class="item {{ request()->is('scan*') ? 'active' : '' }}">
                 <div class="big-icon">
                     <ion-icon name="finger-print-outline" class="icon"></ion-icon>
                 </div>
@@ -186,7 +186,7 @@
                 </div>
             </a>
             <a href="{{ route('viewAbsensiSiswa') }}"
-                class="{{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
+                class="item {{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
                 <div class="big-icon">
                     <ion-icon name="finger-print-outline" class="icon"></ion-icon>
                 </div>
@@ -206,7 +206,7 @@
                     <strong>Home</strong>
                 </div>
             </a>
-            <a href="{{ route('viewAbsensiSiswa') }}" class="{{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
+            <a href="{{ route('viewAbsensiSiswa') }}" class="item {{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
                 <div class="big-icon">
                     <ion-icon name="finger-print-outline" class="icon"></ion-icon>
                 </div>
