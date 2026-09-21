@@ -33,7 +33,7 @@
                 <div class="col-6">
                     <a href="#" id="masuk">
                         <div class="stat-box bg-success">
-                            <ion-icon name="finger-print" class="icon"></ion-icon>
+                            <ion-icon name="finger-print-outline" class="icon"></ion-icon>
                             <div class="title">Scan Masuk</div>
                             <div class="value">{{ $scanToDay->jam_in ?? 'Belum Scan' }}</div>
                         </div>
@@ -42,7 +42,7 @@
                 <div class="col-6">
                     <a href="#" id="pulang">
                         <div class="stat-box bg-danger">
-                            <ion-icon name="finger-print" class="icon"></ion-icon>
+                            <ion-icon name="finger-print-outline" class="icon"></ion-icon>
                             <div class="title">Scan Pulang</div>
                             <div class="value">{{ $scanToDay->jam_out ?? 'Belum Scan' }}</div>
                         </div>
@@ -60,7 +60,7 @@
                 @foreach ($absensi as $a)
                     <a href="#" class="item">
                         <div class="detail">
-                            <ion-icon name="finger-print" class="icon"
+                            <ion-icon name="finger-print-outline" class="icon"
                                 style="font-size: 35px;padding-right:15px"></ion-icon>
                             <div>
                                 <strong>{{ strftime('%A, %e %B %Y', strtotime($a->tanggal)) }}</strong>
