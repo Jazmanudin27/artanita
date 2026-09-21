@@ -26,7 +26,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Responsive Mobile Menu Fix & Modern Glass Bottom Nav -->
     <style>
@@ -36,7 +37,8 @@
         }
 
         /* High Contrast Cards for Mobile */
-        .card, .section .card {
+        .card,
+        .section .card {
             background-color: #ffffff !important;
             border: 1px solid #E2E8F0 !important;
             border-radius: 20px !important;
@@ -67,6 +69,11 @@
             color: #2563EB !important;
         }
 
+        .appBottomMenu .big-icon .icon,
+        .appBottomMenu .big-icon ion-icon {
+            color: #ffffff !important;
+        }
+
         .appBottomMenu .item .col strong {
             font-weight: 700 !important;
             font-size: 11px !important;
@@ -76,7 +83,8 @@
             font-size: 22px !important;
         }
 
-        .appBottomMenu a, .appBottomMenu .item {
+        .appBottomMenu a,
+        .appBottomMenu .item {
             cursor: pointer !important;
             touch-action: manipulation !important;
             -webkit-tap-highlight-color: transparent !important;
@@ -124,7 +132,8 @@
             transform: scale(0.95) !important;
         }
 
-        .menu a .icon-menu, .menu a img {
+        .menu a .icon-menu,
+        .menu a img {
             width: 32px !important;
             height: 32px !important;
             max-width: 100% !important;
@@ -206,7 +215,8 @@
                     <strong>Home</strong>
                 </div>
             </a>
-            <a href="{{ route('viewAbsensiSiswa') }}" class="item {{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
+            <a href="{{ route('viewAbsensiSiswa') }}"
+                class="item {{ request()->is('viewAbsensiSiswa*') ? 'active' : '' }}">
                 <div class="big-icon">
                     <ion-icon name="finger-print-outline" class="icon"></ion-icon>
                 </div>
