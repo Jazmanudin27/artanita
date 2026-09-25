@@ -12,6 +12,14 @@ use App\Http\Controllers\Api\JadwalController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/', function () {
+    return response()->json([
+        'status' => 'online',
+        'message' => 'Artanita Presensi Guru API Service',
+        'version' => '1.0.0'
+    ]);
+});
+
 Route::post('login', [LoginController::class, 'login']);
 Route::group(['middleware' => 'auth.api'], function () {
     Route::prefix('siswa')->group(function () {

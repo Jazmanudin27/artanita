@@ -88,6 +88,23 @@ Route::controller(GuruController::class)->group(function () {
     Route::get('editGuru/{id}', 'edit')->name('editGuru');
     Route::get('deleteGuru/{id}', 'delete')->name('deleteGuru');
     Route::post('storeGuru', 'store')->name('storeGuru');
-    Route::post('updateGuru', 'update')->name('updateGuru');
-    Route::post('showGuru', 'show')->name('showGuru');
 });
+
+Route::get('/v1', function () {
+    return response()->json([
+        'status' => 'online',
+        'app' => 'Artanita Presensi Guru Mobile API v1',
+        'version' => '1.0.0',
+        'timestamp' => now()->toDateTimeString()
+    ]);
+});
+
+Route::get('/v1/api', function () {
+    return response()->json([
+        'status' => 'online',
+        'app' => 'Artanita Presensi Guru Mobile API v1',
+        'version' => '1.0.0',
+        'timestamp' => now()->toDateTimeString()
+    ]);
+});
+
