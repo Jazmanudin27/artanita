@@ -77,13 +77,13 @@ export const DomainModal: React.FC<DomainModalProps> = ({ visible, onClose }) =>
             style={styles.input}
             value={inputDomain}
             onChangeText={setInputDomain}
-            placeholder="http://192.168.1.100:8000 atau https://artanita.id"
+            placeholder="https://mobile.sistemiartas.com/v1"
             placeholderTextColor="#94a3b8"
             autoCapitalize="none"
             autoCorrect={false}
           />
           <Text style={styles.hint}>
-            Contoh: http://192.168.1.10:8000 (Local IP) atau https://domain-anda.com
+            Contoh: https://mobile.sistemiartas.com/v1 atau http://192.168.1.10:8000
           </Text>
 
           <TouchableOpacity

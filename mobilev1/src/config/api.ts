@@ -5,19 +5,23 @@ export const DOMAIN_STORAGE_KEY = '@artanita_api_domain';
 export const TOKEN_STORAGE_KEY = '@artanita_auth_token';
 export const USER_STORAGE_KEY = '@artanita_user_data';
 
-// Default base domain. Can be overwritten in app settings!
-export const DEFAULT_DOMAIN = 'http://10.0.2.2:5006'; // Port 5006 sesuai server Laravel Backend Artanita
+// Default Domain Resmi Artanita Mobile v1
+export const DEFAULT_DOMAIN = 'https://mobile.sistemiartas.com/v1';
 
 export const getBaseUrl = async (): Promise<string> => {
   try {
     const savedDomain = await AsyncStorage.getItem(DOMAIN_STORAGE_KEY);
-    if (savedDomain && savedDomain.trim() !== '') {
-      let cleanDomain = savedDomain.trim().replace(/\/+$/, '');
-      if (!cleanDomain.startsWith('http://') && !cleanDomain.startsWith('https://')) {
-        cleanDomain = 'http://' + cleanDomain;
-      }
+    let targetDomain = (savedDomain && savedDomain.trim() !== '') ? savedDomain.trim() : DEFAULT_DOMAIN;
+
+    let cleanDomain = targetDomain.replace(/\/+$/, '');
+    if (!cleanDomain.startsWith('http://') && !cleanDomain.startsWith('https://')) {
+      cleanDomain = 'https://' + cleanDomain;
+    }
+
+    if (!cleanDomain.endsWith('/api')) {
       return `${cleanDomain}/api`;
     }
+    return cleanDomain;
   } catch (e) {
     console.warn('Error reading saved domain:', e);
   }
@@ -27,13 +31,13 @@ export const getBaseUrl = async (): Promise<string> => {
 export const getStorageDomain = async (): Promise<string> => {
   try {
     const savedDomain = await AsyncStorage.getItem(DOMAIN_STORAGE_KEY);
-    if (savedDomain && savedDomain.trim() !== '') {
-      let cleanDomain = savedDomain.trim().replace(/\/+$/, '');
-      if (!cleanDomain.startsWith('http://') && !cleanDomain.startsWith('https://')) {
-        cleanDomain = 'http://' + cleanDomain;
-      }
-      return cleanDomain;
+    let targetDomain = (savedDomain && savedDomain.trim() !== '') ? savedDomain.trim() : DEFAULT_DOMAIN;
+
+    let cleanDomain = targetDomain.replace(/\/+$/, '');
+    if (!cleanDomain.startsWith('http://') && !cleanDomain.startsWith('https://')) {
+      cleanDomain = 'https://' + cleanDomain;
     }
+    return cleanDomain;
   } catch (e) {}
   return DEFAULT_DOMAIN;
 };
