@@ -185,6 +185,8 @@ Route::middleware(['auth', 'Admin'])->group(function () {
         Route::post('storeSpp', 'storeSpp')->name('storeSpp');
         Route::post('nobuktiSpp', 'nobuktiSpp')->name('nobuktiSpp');
         Route::post('cetakFakturSpp', 'cetakFakturSpp')->name('cetakFakturSpp');
+    });
+
 });
 
 Route::get('/v1', function () {
@@ -204,4 +206,5 @@ Route::get('/v1/api', function () {
         'timestamp' => now()->toDateTimeString()
     ]);
 });
+
 
