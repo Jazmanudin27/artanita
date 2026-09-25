@@ -1,7 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createApiClient, DEFAULT_DOMAIN, DOMAIN_STORAGE_KEY, TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from '../config/api';
+import { DEFAULT_DOMAIN, DOMAIN_STORAGE_KEY, TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from '../config/api';
 import { Guru, UserAuthData } from '../types';
+import { loginGuru, logoutGuru } from '../services/authService';
 
 interface AuthContextType {
   user: Guru | null;
@@ -47,10 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async (username: string, password: string): Promise<UserAuthData> => {
-    const client = await createApiClient();
-    const response = await client.post('/login', { username, password });
-    
-    const authData: UserAuthData = response.data;
+    const authData = await loginGuru(username, password);
     
     if (authData.token) {
       const guruData = authData.data;
@@ -67,8 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       if (user && user.id) {
-        const client = await createApiClient();
-        await client.get(`/logout/${user.id}`).catch(() => {});
+        await logoutGuru(user.id).catch(() => {});
       }
     } catch (e) {
       console.warn('Logout endpoint failed', e);
