@@ -185,6 +185,23 @@ Route::middleware(['auth', 'Admin'])->group(function () {
         Route::post('storeSpp', 'storeSpp')->name('storeSpp');
         Route::post('nobuktiSpp', 'nobuktiSpp')->name('nobuktiSpp');
         Route::post('cetakFakturSpp', 'cetakFakturSpp')->name('cetakFakturSpp');
-    });
-
 });
+
+Route::get('/v1', function () {
+    return response()->json([
+        'status' => 'online',
+        'app' => 'Artanita Presensi Guru Mobile API v1',
+        'version' => '1.0.0',
+        'timestamp' => now()->toDateTimeString()
+    ]);
+});
+
+Route::get('/v1/api', function () {
+    return response()->json([
+        'status' => 'online',
+        'app' => 'Artanita Presensi Guru Mobile API v1',
+        'version' => '1.0.0',
+        'timestamp' => now()->toDateTimeString()
+    ]);
+});
+
